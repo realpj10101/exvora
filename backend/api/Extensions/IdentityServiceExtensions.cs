@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using api.Models;
 // using api.Models;
 using api.Settings;
 using AspNetCore.Identity.MongoDbCore.Extensions;
@@ -36,46 +37,46 @@ public static class IdentityServiceExtensions
         }
         #endregion Authentication & Authorization
 
-        // #region MongoIdentity & Role
-        // var mongoDbSettings = configuration.GetSection(nameof(MyMongoDbSettings)).Get<MyMongoDbSettings>();
+        #region MongoIdentity & Role
+        var mongoDbSettings = configuration.GetSection(nameof(MyMongoDbSettings)).Get<MyMongoDbSettings>();
 
-        // if (mongoDbSettings is not null)
-        // {
-        //     var mongodbIdentityConfig = new MongoDbIdentityConfiguration
-        //     {
-        //         MongoDbSettings = new MongoDbSettings
-        //         {
-        //             ConnectionString = mongoDbSettings.ConnectionString,
-        //             DatabaseName = mongoDbSettings.DatabaseName
-        //         },
-        //         IdentityOptionsAction = options =>
-        //         {
-        //             options.Password.RequireDigit = false;
-        //             options.Password.RequiredLength = 8;
-        //             options.Password.RequireNonAlphanumeric = true;
-        //             options.Password.RequireLowercase = false;
+        if (mongoDbSettings is not null)
+        {
+            var mongodbIdentityConfig = new MongoDbIdentityConfiguration
+            {
+                MongoDbSettings = new MongoDbSettings
+                {
+                    ConnectionString = mongoDbSettings.ConnectionString,
+                    DatabaseName = mongoDbSettings.DatabaseName
+                },
+                IdentityOptionsAction = options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 8;
+                    options.Password.RequireNonAlphanumeric = true;
+                    options.Password.RequireLowercase = false;
 
-        //             options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
-        //             options.Lockout.MaxFailedAccessAttempts = 5;
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+                    options.Lockout.MaxFailedAccessAttempts = 5;
 
-        //             options.User.RequireUniqueEmail = true;
-        //         }
-        //     };
+                    options.User.RequireUniqueEmail = true;
+                }
+            };
 
-        //     services.AddDataProtection();
+            services.AddDataProtection();
 
-        //     services.ConfigureMongoDbIdentity<AppUser, AppRole, ObjectId>(mongodbIdentityConfig)
-        //     .AddUserManager<UserManager<AppUser>>()
-        //     .AddSignInManager<SignInManager<AppUser>>()
-        //     .AddRoleManager<RoleManager<AppRole>>()
-        //     .AddDefaultTokenProviders();
-        // }
-        // #endregion MongoIdentity & Role
+            services.ConfigureMongoDbIdentity<AppUser, AppRole, ObjectId>(mongodbIdentityConfig)
+            .AddUserManager<UserManager<AppUser>>()
+            .AddSignInManager<SignInManager<AppUser>>()
+            .AddRoleManager<RoleManager<AppRole>>()
+            .AddDefaultTokenProviders();
+        }
+        #endregion MongoIdentity & Role
 
         #region Policy
+
         services.AddAuthorizationBuilder()
-            .AddPolicy("RequiredAdminRole", policy => policy.RequireRole("admin"))
-            .AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("admin", "moderator"));
+            .AddPolicy("RequiredAdminRole", policy => policy.RequireRole("admin"));
         #endregion
 
         return services;

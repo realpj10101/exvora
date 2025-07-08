@@ -10,6 +10,7 @@ builder.Services.AddControllers()
 
 builder.Services.AddApplicationService(builder.Configuration);
 builder.Services.AddIdentityService(builder.Configuration);
+builder.Services.AddRepositoryServices();
 builder.Services.AddOpenApi();
 
 builder.Services.AddAuthorization(options =>

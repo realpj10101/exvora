@@ -2,13 +2,16 @@ using api.DTOs;
 using api.DTOs.Account;
 using api.DTOs.ExchangeDtos;
 using api.DTOs.Helpers;
+using api.Enums;
 using api.Extensions;
+using api.Helpers;
 using api.Interfaces;
 using api.Models;
 using api.Settings;
 using Microsoft.AspNetCore.Identity;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace api.Repositories;
 
@@ -62,5 +65,40 @@ public class ExchangeRepository : IExchangeRepository
             Mappers.ConvertExchangeToExchangeRes(exchange),
             Error: null
         );
+    }
+
+    public async Task<PagedList<Exchange>> GetAllExchangesAsync(ExchangeParams exParams, CancellationToken cancellationToken)
+    {
+        PagedList<Exchange> exchanges = await PagedList<Exchange>.CreatePagedListAsync(
+            CreateQuery(exParams), exParams.PageNumber, exParams.PageSize, cancellationToken 
+        );
+
+        return exchanges;
+    }
+
+    private IMongoQueryable<Exchange> CreateQuery(ExchangeParams exchangeParams)
+    {
+        IMongoQueryable<Exchange> query = _collection.AsQueryable();
+
+        if (!string.IsNullOrEmpty(exchangeParams.OrderBy))
+        {
+            if (Enum.TryParse<ExchangeStatus>(exchangeParams.OrderBy, true, out var parsedStatus))
+            {
+                query = query.Where(exchange => exchange.Status == parsedStatus);
+            }
+        }
+
+        if (!string.IsNullOrEmpty(exchangeParams.Search?.ToUpper()))
+        {
+            exchangeParams.Search = exchangeParams.Search.ToUpper();
+
+            query = query.Where(
+                e => e.Name.Contains(exchangeParams.Search, StringComparison.CurrentCultureIgnoreCase)
+            );
+        }
+        
+        query = query.OrderByDescending(exchange => exchange.CreatedAt);
+
+        return query;
     }
 }

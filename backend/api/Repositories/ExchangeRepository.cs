@@ -68,21 +68,23 @@ public class ExchangeRepository : IExchangeRepository
         );
     }
 
-    public async Task<PagedList<Exchange>> GetAllExchangesAsync(ExchangeParams exParams, CancellationToken cancellationToken)
+    public async Task<PagedList<Exchange>> GetAllExchangesAsync(ExchangeParams exParams,
+        CancellationToken cancellationToken)
     {
         PagedList<Exchange> exchanges = await PagedList<Exchange>.CreatePagedListAsync(
-            CreateQuery(exParams), exParams.PageNumber, exParams.PageSize, cancellationToken 
+            CreateQuery(exParams), exParams.PageNumber, exParams.PageSize, cancellationToken
         );
 
         return exchanges;
     }
 
-    public async Task<PagedList<Exchange>> GetAllUserExchanges(ObjectId? userId, ExchangeParams exchangeParams, CancellationToken cancellationToken)
+    public async Task<PagedList<Exchange>> GetAllUserExchanges(ObjectId? userId, ExchangeParams exchangeParams,
+        CancellationToken cancellationToken)
     {
         IMongoQueryable<Exchange> query = _collection.AsQueryable();
-        
+
         query = query.Where(doc => doc.OwnerId == userId);
-        
+
         if (!string.IsNullOrEmpty(exchangeParams.OrderBy))
         {
             if (Enum.TryParse<ExchangeStatus>(exchangeParams.OrderBy, true, out var parsedStatus))
@@ -99,11 +101,35 @@ public class ExchangeRepository : IExchangeRepository
                 e => e.Name.Contains(exchangeParams.Search, StringComparison.CurrentCultureIgnoreCase)
             );
         }
-        
+
         query = query.OrderByDescending(exchange => exchange.CreatedAt);
-        
+
         return await PagedList<Exchange>
             .CreatePagedListAsync(query, exchangeParams.PageNumber, exchangeParams.PageSize, cancellationToken);
+    }
+
+    public async Task<OperationResult<ExchangeRes>> GetByExchangeNameAsync(string exchangeName,
+        CancellationToken cancellationToken)
+    {
+        Exchange exchange = await _collection.Find(exchange => exchange.Name.ToUpper() == exchangeName.ToUpper())
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (exchange is null)
+        {
+            return new OperationResult<ExchangeRes>(
+                false,
+                Error: new CustomError(
+                    Code: ErrorCode.IsNotFound,
+                    Message: "Exchange not found!"
+                )
+            );
+        }
+
+        return new OperationResult<ExchangeRes>(
+            true,
+            Mappers.ConvertExchangeToExchangeRes(exchange),
+            null
+        );
     }
 
     private IMongoQueryable<Exchange> CreateQuery(ExchangeParams exchangeParams)
@@ -126,7 +152,7 @@ public class ExchangeRepository : IExchangeRepository
                 e => e.Name.Contains(exchangeParams.Search, StringComparison.CurrentCultureIgnoreCase)
             );
         }
-        
+
         query = query.OrderByDescending(exchange => exchange.CreatedAt);
 
         return query;

@@ -61,7 +61,7 @@ public class ExchangeController(IExchangeRepository _exchangeRepository, ITokenS
             TotalItems: pagedExchanges.TotalItems,
             TotalPages: pagedExchanges.TotalPages
         );
-        
+
         Response.AddPaginationHeader(paginationHeader);
 
         List<ExchangeRes> exchangeDtos = [];
@@ -75,7 +75,8 @@ public class ExchangeController(IExchangeRepository _exchangeRepository, ITokenS
     }
 
     [HttpGet("get-user-exchanges")]
-    public async Task<ActionResult<IEnumerable<ExchangeRes>>> GetAllUserExchanges([FromQuery] ExchangeParams exchangeParams,
+    public async Task<ActionResult<IEnumerable<ExchangeRes>>> GetAllUserExchanges(
+        [FromQuery] ExchangeParams exchangeParams,
         CancellationToken cancellationToken)
     {
         ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
@@ -83,27 +84,49 @@ public class ExchangeController(IExchangeRepository _exchangeRepository, ITokenS
         if (userId is null)
             return Unauthorized("You are not logged in. Please login again.");
 
-       PagedList<Exchange> pagedExchanges = await _exchangeRepository.GetAllUserExchanges(userId, exchangeParams, cancellationToken);
+        PagedList<Exchange> pagedExchanges =
+            await _exchangeRepository.GetAllUserExchanges(userId, exchangeParams, cancellationToken);
 
-       if (pagedExchanges.Count == 0)
-           return NoContent();
-       
-       PaginationHeader paginationHeader = new(
-           CurrentPage: pagedExchanges.CurrentPage,
-           ItemsPerPage: pagedExchanges.PageSize,
-           TotalItems: pagedExchanges.TotalItems,
-           TotalPages: pagedExchanges.TotalPages
-       );
-       
-       Response.AddPaginationHeader(paginationHeader);
+        if (pagedExchanges.Count == 0)
+            return NoContent();
 
-       List<ExchangeRes> exchangeDtos = [];
+        PaginationHeader paginationHeader = new(
+            CurrentPage: pagedExchanges.CurrentPage,
+            ItemsPerPage: pagedExchanges.PageSize,
+            TotalItems: pagedExchanges.TotalItems,
+            TotalPages: pagedExchanges.TotalPages
+        );
 
-       foreach (Exchange exchange in pagedExchanges)
-       {
-           exchangeDtos.Add(Mappers.ConvertExchangeToExchangeRes(exchange));
-       }
+        Response.AddPaginationHeader(paginationHeader);
 
-       return exchangeDtos;
+        List<ExchangeRes> exchangeDtos = [];
+
+        foreach (Exchange exchange in pagedExchanges)
+        {
+            exchangeDtos.Add(Mappers.ConvertExchangeToExchangeRes(exchange));
+        }
+
+        return exchangeDtos;
+    }
+
+    [HttpGet("get-by-exchange-name/{exchangeName}")]
+    public async Task<ActionResult<ExchangeRes>> GetByExchangeName(string exchangeName,
+        CancellationToken cancellationToken)
+    {
+        ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
+
+        if (userId is null)
+            return Unauthorized("You are not logged in. Please login again.");
+
+        OperationResult<ExchangeRes> opResult =
+            await _exchangeRepository.GetByExchangeNameAsync(exchangeName, cancellationToken);
+
+        return opResult.IsSuccess
+            ? Ok(opResult.Result)
+            : opResult.Error.Code switch
+            {
+                ErrorCode.IsNotFound => NotFound(opResult.Error.Message),
+                _ => BadRequest("Operation failed. Contact administrator.")
+            };
     }
 }

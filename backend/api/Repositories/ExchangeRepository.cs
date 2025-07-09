@@ -19,6 +19,7 @@ public class ExchangeRepository : IExchangeRepository
 {
     private readonly IMongoCollection<Exchange> _collection;
     private readonly ITokenService _tokenService;
+    private IExchangeRepository _exchangeRepositoryImplementation;
 
     public ExchangeRepository(IMongoClient client, IMyMongoDbSettings dbSettings, ITokenService tokenService)
     {
@@ -74,6 +75,35 @@ public class ExchangeRepository : IExchangeRepository
         );
 
         return exchanges;
+    }
+
+    public async Task<PagedList<Exchange>> GetAllUserExchanges(ObjectId? userId, ExchangeParams exchangeParams, CancellationToken cancellationToken)
+    {
+        IMongoQueryable<Exchange> query = _collection.AsQueryable();
+        
+        query = query.Where(doc => doc.OwnerId == userId);
+        
+        if (!string.IsNullOrEmpty(exchangeParams.OrderBy))
+        {
+            if (Enum.TryParse<ExchangeStatus>(exchangeParams.OrderBy, true, out var parsedStatus))
+            {
+                query = query.Where(exchange => exchange.Status == parsedStatus);
+            }
+        }
+
+        if (!string.IsNullOrEmpty(exchangeParams.Search?.ToUpper()))
+        {
+            exchangeParams.Search = exchangeParams.Search.ToUpper();
+
+            query = query.Where(
+                e => e.Name.Contains(exchangeParams.Search, StringComparison.CurrentCultureIgnoreCase)
+            );
+        }
+        
+        query = query.OrderByDescending(exchange => exchange.CreatedAt);
+        
+        return await PagedList<Exchange>
+            .CreatePagedListAsync(query, exchangeParams.PageNumber, exchangeParams.PageSize, cancellationToken);
     }
 
     private IMongoQueryable<Exchange> CreateQuery(ExchangeParams exchangeParams)

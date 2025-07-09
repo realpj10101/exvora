@@ -10,4 +10,5 @@ public interface IExchangeRepository
 {
     public Task<OperationResult<ExchangeRes>> CreateExchangeAsync(CreateExchangeDto request, ObjectId? ownerId, CancellationToken cancellationToken);
     public Task<PagedList<Exchange>> GetAllExchangesAsync(ExchangeParams exParams, CancellationToken cancellationToken);
+    public Task<PagedList<Exchange>> GetAllUserExchanges(ObjectId? userId, ExchangeParams exchangeParams, CancellationToken cancellationToken);
 }

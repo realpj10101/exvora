@@ -73,4 +73,37 @@ public class ExchangeController(IExchangeRepository _exchangeRepository, ITokenS
 
         return exchangeDtos;
     }
+
+    [HttpGet("get-user-exchanges")]
+    public async Task<ActionResult<IEnumerable<ExchangeRes>>> GetAllUserExchanges([FromQuery] ExchangeParams exchangeParams,
+        CancellationToken cancellationToken)
+    {
+        ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
+
+        if (userId is null)
+            return Unauthorized("You are not logged in. Please login again.");
+
+       PagedList<Exchange> pagedExchanges = await _exchangeRepository.GetAllUserExchanges(userId, exchangeParams, cancellationToken);
+
+       if (pagedExchanges.Count == 0)
+           return NoContent();
+       
+       PaginationHeader paginationHeader = new(
+           CurrentPage: pagedExchanges.CurrentPage,
+           ItemsPerPage: pagedExchanges.PageSize,
+           TotalItems: pagedExchanges.TotalItems,
+           TotalPages: pagedExchanges.TotalPages
+       );
+       
+       Response.AddPaginationHeader(paginationHeader);
+
+       List<ExchangeRes> exchangeDtos = [];
+
+       foreach (Exchange exchange in pagedExchanges)
+       {
+           exchangeDtos.Add(Mappers.ConvertExchangeToExchangeRes(exchange));
+       }
+
+       return exchangeDtos;
+    }
 }

@@ -132,6 +132,62 @@ public class ExchangeRepository : IExchangeRepository
         );
     }
 
+    public async Task<OperationResult> ApproveExchangeAsync(string exchangeName, CancellationToken cancellationToken)
+    {
+        Exchange? exchange = await _collection.Find(exchange => exchange.Name.ToUpper() == exchangeName.ToUpper())
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (exchange is null)
+        {
+            return new OperationResult(
+                false,
+                Error: new CustomError(
+                    Code: ErrorCode.IsNotFound,
+                    "Exchange not found!"
+                )
+            );
+        }
+
+        UpdateDefinition<Exchange> updatedExchange = Builders<Exchange>.Update
+            .Set(ex => ex.Status, ExchangeStatus.Approved);
+
+        await _collection.UpdateOneAsync(ex => ex.Name == exchangeName, updatedExchange,
+            cancellationToken: cancellationToken);
+
+        return new OperationResult(
+            true,
+            null
+        );
+    }
+
+    public async Task<OperationResult> RejectExchangeAsync(string exchangeName, CancellationToken cancellationToken)
+    {
+        Exchange? exchange = await _collection.Find(exchange => exchange.Name.ToUpper() == exchangeName.ToUpper())
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (exchange is null)
+        {
+            return new OperationResult(
+                false,
+                Error: new CustomError(
+                    Code: ErrorCode.IsNotFound,
+                    "Exchange not found!"
+                )
+            );
+        }
+
+        UpdateDefinition<Exchange> updatedExchange = Builders<Exchange>.Update
+            .Set(ex => ex.Status, ExchangeStatus.Rejected);
+
+        await _collection.UpdateOneAsync(ex => ex.Name == exchangeName, updatedExchange,
+            cancellationToken: cancellationToken);
+
+        return new OperationResult(
+            true,
+            null
+        );
+    }
+
     private IMongoQueryable<Exchange> CreateQuery(ExchangeParams exchangeParams)
     {
         IMongoQueryable<Exchange> query = _collection.AsQueryable();

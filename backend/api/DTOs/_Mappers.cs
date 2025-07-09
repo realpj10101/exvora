@@ -12,6 +12,7 @@ public static class Mappers
             FirstName = request.FirstName,
             LastName = request.LastName,
             Email = request.Email,
+            UserName = request.Email.Split('@')[0],
             PhoneNumber = request.PhoneNumber,
             Country = request.Country
         };

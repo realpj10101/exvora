@@ -13,5 +13,6 @@ public enum ErrorCode
     IsNotFound,
     IsFailed,
     SaveFailed,
-    IsAlreadyExist
+    IsAlreadyExist,
+    InvalidType
 }

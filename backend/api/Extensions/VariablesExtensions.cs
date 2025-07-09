@@ -9,6 +9,7 @@ public class AppVariablesExtensions
     public const string TokenKey = "TokenKey";
 
     public const string CollectionUsers = "users";
+    public const string CollectionExchanges = "exchanges";
     public const string CollectionFollows = "follows";
     public const string CollectionTracks = "tracks";
     public const string CollectionComments = "comments";

@@ -9,7 +9,7 @@ public record Exchange(
     [Optional]
     [property: BsonId, BsonRepresentation(BsonType.ObjectId)]
     ObjectId Id,
-    ObjectId OwnerId,
+    ObjectId? OwnerId,
     string Name,
     string Description,
     ExchangeType Type,

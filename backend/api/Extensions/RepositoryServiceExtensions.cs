@@ -10,6 +10,7 @@ public static class RepositoryServiceExtensions
     {
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IAccountRepository, AccountRepository>();
+        services.AddScoped<IExchangeRepository, ExchangeRepository>();
 
         return services;
     }

@@ -1,4 +1,5 @@
 using api.DTOs.Account;
+using api.DTOs.CurrencyDtos;
 using api.DTOs.ExchangeDtos;
 using api.Enums;
 using api.Models;
@@ -42,7 +43,7 @@ public static class Mappers
         {
             return null;
         }
-            
+
         return new(
             OwnerId: ownerId,
             Name: request.Name.ToLower().Trim(),
@@ -55,12 +56,45 @@ public static class Mappers
 
     public static ExchangeRes ConvertExchangeToExchangeRes(Exchange exchange)
     {
-        return new (
-            ExchangeName: exchange.Name,
-            Description: exchange.Description,
+        return new(
+            ExchangeName: exchange.Name.Trim().ToLower(),
+            Description: exchange.Description.Trim().ToLower(),
             ExchangeType: exchange.Type,
             ExchangeStatus: exchange.Status,
             CreatedAt: exchange.CreatedAt
+        );
+    }
+
+    public static Currency? ConvertAddCurrencyToCurrency(AddCurrencyDto request)
+    {
+        CurrencyStatus currencyStatusEnum;
+        CurrencyType currencyTypeEnum;
+
+        if (Enum.TryParse<CurrencyType>(request.Category.Trim(), true, out var category))
+        {
+            currencyTypeEnum = category;
+        }
+        else
+        {
+            return null;
+        }
+
+        if (Enum.TryParse<CurrencyStatus>(request.Status.Trim(), true, out var status))
+        {
+            currencyStatusEnum = status;
+        }
+        else
+        {
+            return null;
+        }
+
+        return new Currency(
+            Symbol: request.Symbol.Trim().ToLower(),
+            FullName: request.FullName.Trim().ToLower(),
+            CurrencyPrice: request.CurrencyPrice,
+            MarketCap: request.MarketCap,
+            Category: currencyTypeEnum,
+            Status: currencyStatusEnum
         );
     }
 }

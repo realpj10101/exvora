@@ -14,5 +14,6 @@ public enum ErrorCode
     IsFailed,
     SaveFailed,
     IsAlreadyExist,
-    InvalidType
+    InvalidType,
+    DuplicateCurrency
 }

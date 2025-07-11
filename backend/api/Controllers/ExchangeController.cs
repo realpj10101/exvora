@@ -124,7 +124,7 @@ public class ExchangeController(IExchangeRepository _exchangeRepository, ITokenS
 
         return opResult.IsSuccess
             ? Ok(opResult.Result)
-            : opResult.Error.Code switch
+            : opResult.Error?.Code switch
             {
                 ErrorCode.IsNotFound => NotFound(opResult.Error.Message),
                 _ => BadRequest("Operation failed. Contact administrator.")

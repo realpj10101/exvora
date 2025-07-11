@@ -65,7 +65,7 @@ public class SeedController : BaseApiController
             Email = "admin@a.com"
         };
 
-        await _userManager.CreateAsync(admin, "Aaaaaaaa/"); // Create admin
+        await _userManager.CreateAsync(admin, "Admin.1010"); // Create admin
         await _userManager.AddToRolesAsync(admin, ["admin"]); // Add admin to two roles of "admin" and "moderator"
         
         #endregion Create Admin 

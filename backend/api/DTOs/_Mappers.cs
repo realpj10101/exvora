@@ -97,4 +97,16 @@ public static class Mappers
             Status: currencyStatusEnum
         );
     }
+
+    public static CurrencyResponse ConvertCurrencyToCurrencyResponse(Currency currency)
+    {
+        return new (
+            Symbol: currency.Symbol,
+            FullName: currency.FullName,
+            Price: currency.CurrencyPrice,
+            MarketCap: currency.MarketCap,
+            Category: currency.Category,
+            Status: currency.Status
+        );
+    }
 }

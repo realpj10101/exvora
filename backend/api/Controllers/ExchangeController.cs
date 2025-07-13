@@ -130,36 +130,60 @@ public class ExchangeController(IExchangeRepository _exchangeRepository, ITokenS
                 _ => BadRequest("Operation failed. Contact administrator.")
             };
     }
-    
+
     [Authorize(Roles = "admin")]
     [HttpPut("approve-exchange/{exchangeName}")]
     public async Task<ActionResult> ApproveExchange(string exchangeName, CancellationToken cancellationToken)
     {
         ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
-        
+
         if (userId is null)
             return Unauthorized("You are not logged in. Please login again.");
 
-        OperationResult operationResult = await _exchangeRepository.ApproveExchangeAsync(exchangeName, cancellationToken);
-        
+        OperationResult operationResult =
+            await _exchangeRepository.ApproveExchangeAsync(exchangeName, cancellationToken);
+
         return operationResult.IsSuccess
             ? Ok(new Response(Message: "Exchange successfully approved."))
             : BadRequest(operationResult.Error?.Message);
     }
-    
+
     [Authorize(Roles = "admin")]
     [HttpPut("reject-exchange/{exchangeName}")]
     public async Task<ActionResult> RejectExchange(string exchangeName, CancellationToken cancellationToken)
     {
         ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
-        
+
         if (userId is null)
             return Unauthorized("You are not logged in. Please login again.");
 
-        OperationResult operationResult = await _exchangeRepository.RejectExchangeAsync(exchangeName, cancellationToken);
-        
+        OperationResult operationResult =
+            await _exchangeRepository.RejectExchangeAsync(exchangeName, cancellationToken);
+
         return operationResult.IsSuccess
             ? Ok(new Response(Message: "Exchange successfully rejected."))
             : BadRequest(operationResult.Error?.Message);
+    }
+
+    [HttpPut("update-exchange/{exchangeName}")]
+    public async Task<ActionResult> UpdateExchange(UpdateExchangeDto request, string exchangeName,
+        CancellationToken cancellationToken)
+    {
+        ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
+
+        if (userId is null)
+            return Unauthorized("You are not logged in. Please login again.");
+
+        OperationResult opResult =
+            await _exchangeRepository.UpdateExchangeAsync(request, exchangeName, cancellationToken);
+
+        return opResult.IsSuccess
+            ? Ok(new Response(Message: "Exchange successfully updated."))
+            : opResult.Error?.Code switch
+            {
+                ErrorCode.IsNotFound => NotFound(opResult.Error.Message),
+                ErrorCode.InvalidType => NotFound(opResult.Error.Message),
+                _ => BadRequest("Operation failed. Contact administrator.")
+            };
     }
 }

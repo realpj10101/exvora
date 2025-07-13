@@ -188,6 +188,63 @@ public class ExchangeRepository : IExchangeRepository
         );
     }
 
+    public async Task<OperationResult> UpdateExchangeAsync(UpdateExchangeDto request, string exchangeRepository,
+        CancellationToken cancellationToken)
+    {
+        ObjectId? exchangeId = await _collection.AsQueryable()
+            .Where(doc => doc.Name.ToUpper() == exchangeRepository.ToUpper())
+            .Select(item => item.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (exchangeId.Equals(null) || exchangeId == ObjectId.Empty)
+        {
+            return new OperationResult(
+                false,
+                Error: new CustomError(
+                    ErrorCode.IsNotFound,
+                    "Exchange not found!"
+                )
+            );
+        }
+
+        var updates = new List<UpdateDefinition<Exchange>>();
+
+        if (!string.IsNullOrWhiteSpace(request.Name))
+            updates.Add(Builders<Exchange>.Update.Set(e => e.Name, request.Name.Trim().ToLower()));
+
+        if (!string.IsNullOrWhiteSpace(request.Description))
+            updates.Add(Builders<Exchange>.Update.Set(e => e.Description, request.Description.Trim().ToLower()));
+
+        if (!string.IsNullOrWhiteSpace(request.Type))
+        {
+            if (Enum.TryParse<ExchangeType>(request.Type.Trim(), true, out var parsedType))
+            {
+                updates.Add(Builders<Exchange>.Update.Set(e => e.Type, parsedType));
+            }
+            else
+            {
+                return new OperationResult(
+                    false,
+                    Error: new CustomError(
+                        ErrorCode.InvalidType,
+                        Message: "Enter valid type"
+                    )
+                );
+            }
+        }
+
+        updates.Add(Builders<Exchange>.Update.Set(e => e.Status, ExchangeStatus.Pending));
+
+        var updateDef = Builders<Exchange>.Update.Combine(updates);
+
+        await _collection.UpdateOneAsync<Exchange>(e => e.Id == exchangeId, updateDef, null, cancellationToken);
+
+        return new OperationResult(
+            true,
+            null
+        );
+    }
+
     private IMongoQueryable<Exchange> CreateQuery(ExchangeParams exchangeParams)
     {
         IMongoQueryable<Exchange> query = _collection.AsQueryable();

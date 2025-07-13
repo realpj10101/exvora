@@ -10,5 +10,6 @@ public record ExchangeCurrency(
     ObjectId Id,
     ObjectId? ExchangeId,
     ObjectId? CurrencyId,
+    string Symbol,
     float Price
 );

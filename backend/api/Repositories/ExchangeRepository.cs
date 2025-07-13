@@ -232,7 +232,7 @@ public class ExchangeRepository : IExchangeRepository
                 );
             }
         }
-
+        
         updates.Add(Builders<Exchange>.Update.Set(e => e.Status, ExchangeStatus.Pending));
 
         var updateDef = Builders<Exchange>.Update.Combine(updates);

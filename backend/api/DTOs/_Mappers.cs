@@ -58,8 +58,8 @@ public static class Mappers
     public static ExchangeRes ConvertExchangeToExchangeRes(Exchange exchange)
     {
         return new(
-            ExchangeName: exchange.Name.Trim().ToLower(),
-            Description: exchange.Description.Trim().ToLower(),
+            ExchangeName: exchange.Name,
+            Description: exchange.Description,
             ExchangeType: exchange.Type,
             ExchangeStatus: exchange.Status,
             CreatedAt: exchange.CreatedAt
@@ -111,12 +111,13 @@ public static class Mappers
         );
     }
 
-    public static ExchangeCurrency ConvertAddExCurDtoToEccCur(AddExCurrency request, ObjectId? exchangeId,
+    public static ExchangeCurrency ConvertAddExCurDtoToExCur(AddExCurrency request, ObjectId? exchangeId,
         ObjectId? currencyId)
     {
         return new(
             ExchangeId: exchangeId,
             CurrencyId: currencyId,
+            Symbol: request.Symbol.Trim().ToLower(),
             Price: request.Price
         );
     }

@@ -11,15 +11,7 @@ public class AppVariablesExtensions
     public const string CollectionUsers = "users";
     public const string CollectionExchanges = "exchanges";
     public const string CollectionCurrencies = "currencies";
-    public const string CollectionFollows = "follows";
-    public const string CollectionTracks = "tracks";
-    public const string CollectionComments = "comments";
-    public const string CollectionLikes = "likes";
-    public const string CollectionPlaylists = "playlists";
-    public const string CollectionTeams = "teams";
-    public const string CollectionChats = "chats";
-    public const string CollectionExceptionLogs = "exception-logs";
-    public const string CollectionRefreshTokens = "refresh-tokens";
+    public const string CollectionExchangeCurrencies = "exchangeCurrencies";
 
     public readonly static string[] AppVersion = ["1", "1.0.2"];
 

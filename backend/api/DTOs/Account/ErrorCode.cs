@@ -15,5 +15,7 @@ public enum ErrorCode
     SaveFailed,
     IsAlreadyExist,
     InvalidType,
-    DuplicateCurrency
+    DuplicateCurrency,
+    IsExchangeNotFound,
+    IsCurrencyNotFound,
 }

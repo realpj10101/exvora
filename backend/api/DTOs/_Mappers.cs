@@ -1,5 +1,6 @@
 using api.DTOs.Account;
 using api.DTOs.CurrencyDtos;
+using api.DTOs.ExchangeCurrencyDtos;
 using api.DTOs.ExchangeDtos;
 using api.Enums;
 using api.Models;
@@ -100,13 +101,33 @@ public static class Mappers
 
     public static CurrencyResponse ConvertCurrencyToCurrencyResponse(Currency currency)
     {
-        return new (
+        return new(
             Symbol: currency.Symbol,
             FullName: currency.FullName,
             Price: currency.CurrencyPrice,
             MarketCap: currency.MarketCap,
             Category: currency.Category,
             Status: currency.Status
+        );
+    }
+
+    public static ExchangeCurrency ConvertAddExCurDtoToEccCur(AddExCurrency request, ObjectId? exchangeId,
+        ObjectId? currencyId)
+    {
+        return new(
+            ExchangeId: exchangeId,
+            CurrencyId: currencyId,
+            Price: request.Price
+        );
+    }
+
+    public static ExchangeCurrencyRes ConvertExCurToExCurRes(ExchangeCurrency exchangeCur, ExchangeRes exchangeRes,
+        CurrencyResponse currencyResponse)
+    {
+        return new(
+            Exchange: exchangeRes,
+            Currency: currencyResponse,
+            Price: exchangeCur.Price
         );
     }
 }

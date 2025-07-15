@@ -117,18 +117,16 @@ public static class Mappers
         return new(
             ExchangeId: exchangeId,
             CurrencyId: currencyId,
-            Symbol: request.Symbol.Trim().ToLower(),
-            Price: request.Price
+            Symbol: request.Symbol
         );
     }
 
-    public static ExchangeCurrencyRes ConvertExCurToExCurRes(ExchangeCurrency exchangeCur, ExchangeRes exchangeRes,
+    public static ExchangeCurrencyRes ConvertExCurToExCurRes(ExchangeRes exchangeRes,
         CurrencyResponse currencyResponse)
     {
         return new(
             Exchange: exchangeRes,
-            Currency: currencyResponse,
-            Price: exchangeCur.Price
+            Currency: currencyResponse
         );
     }
 }

@@ -1,6 +1,5 @@
 namespace api.DTOs.ExchangeCurrencyDtos;
 
 public record AddExCurrency(
-    string Symbol,
-    float Price
+    string Symbol
 );

@@ -5,6 +5,5 @@ namespace api.DTOs.ExchangeCurrencyDtos;
 
 public record ExchangeCurrencyRes(
     ExchangeRes Exchange,
-    CurrencyResponse Currency,
-    float Price
+    CurrencyResponse Currency
 );

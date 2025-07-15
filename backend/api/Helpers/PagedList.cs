@@ -41,4 +41,16 @@ public class PagedList<T> : List<T> // Generic (Type Agnostic)
 
         return new PagedList<T>(items, count, pageNumber, pageSize);
     }
+    
+    public static Task<PagedList<T>> CreatePagedListAsync(List<T> list, int pageNumber, int pageSize, CancellationToken cancellationToken)
+    {
+        int count = list.Count;
+
+        IEnumerable<T> items = list
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        return Task.FromResult(new PagedList<T>(items, count, pageNumber, pageSize));
+    }
 }

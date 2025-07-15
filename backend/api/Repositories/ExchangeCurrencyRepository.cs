@@ -1,12 +1,17 @@
+using System.Runtime.InteropServices;
 using api.DTOs;
 using api.DTOs.Account;
+using api.DTOs.CurrencyDtos;
 using api.DTOs.ExchangeCurrencyDtos;
+using api.DTOs.ExchangeDtos;
 using api.DTOs.Helpers;
 using api.Enums;
 using api.Extensions;
+using api.Helpers;
 using api.Interfaces;
 using api.Models;
 using api.Settings;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -33,20 +38,6 @@ public class ExchangeCurrencyRepository : IExchangeCurrencyRepository
     public async Task<OperationResult> AddExchangeCurrencyAsync(AddExCurrency request,
         string exchangeName, CancellationToken cancellationToken)
     {
-        ExchangeCurrency? foundedExchangeCurrency = await _collection
-            .Find(doc => doc.Symbol.ToUpper() == request.Symbol.ToUpper()).FirstOrDefaultAsync(cancellationToken);
-
-        if (foundedExchangeCurrency is not null)
-        {
-            return new OperationResult(
-                false,
-                Error: new CustomError(
-                    ErrorCode.IsAlreadyExist,
-                    "Exchange currency already exists."
-                )
-            );
-        }
-
         ObjectId? exchangeId = await _collectionExchange.AsQueryable()
             .Where(exchange => exchange.Name.ToUpper() == exchangeName.ToUpper())
             .Select(item => item.Id)
@@ -79,6 +70,21 @@ public class ExchangeCurrencyRepository : IExchangeCurrencyRepository
             );
         }
 
+        bool isExists = await _collection.AsQueryable()
+            .AnyAsync(
+                doc => doc.ExchangeId == exchangeId && doc.Symbol.ToUpper() == request.Symbol.ToUpper(),
+                cancellationToken);
+
+        if (isExists)
+        {
+            return new OperationResult(
+                false,
+                Error: new CustomError(
+                    ErrorCode.IsAlreadyExist,
+                    "This exchange already lists that currency."                )
+            );
+        }
+
         ObjectId? currencyId = await _collectionCurrency.AsQueryable()
             .Where(currency => currency.Symbol.ToUpper() == request.Symbol.ToUpper())
             .Select(item => item.Id)
@@ -103,5 +109,42 @@ public class ExchangeCurrencyRepository : IExchangeCurrencyRepository
             true,
             null
         );
+    }
+
+    public async Task<PagedList<ExchangeCurrencyRes>?> GetExchangeCurrenciesAsync(ExchangeParams exchangeParams,
+        string exchangeName, CancellationToken cancellationToken)
+    {
+        Exchange? exchange = await _collectionExchange.Find(doc => doc.Name.ToUpper() == exchangeName.ToUpper())
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (exchange is null)
+            return null;
+
+        var rawResult = await _collection.AsQueryable<ExchangeCurrency>() // create new obj List<{Exchange, Currency}>
+            .Where(exchangeCur => exchangeCur.ExchangeId == exchange.Id)
+            .Join(
+                _collectionExchange.AsQueryable(),
+                eCur => eCur.ExchangeId,
+                ex => ex.Id,
+                (ec, ex) => new { ec, ex }
+            )
+            .Join(
+                _collectionCurrency.AsQueryable(),
+                exCur => exCur.ec.CurrencyId,
+                cu => cu.Id,
+                (exCur, cu) => new
+                {
+                    Exchange = exCur.ex,
+                    Currency = cu
+                }
+            ).ToListAsync(cancellationToken);
+
+        var mappedList = rawResult.Select(item => new ExchangeCurrencyRes(
+            Mappers.ConvertExchangeToExchangeRes(item.Exchange),
+            Mappers.ConvertCurrencyToCurrencyResponse(item.Currency)
+        )).ToList();
+
+        return await PagedList<ExchangeCurrencyRes>
+            .CreatePagedListAsync(mappedList, exchangeParams.PageNumber, exchangeParams.PageSize, cancellationToken);
     }
 }

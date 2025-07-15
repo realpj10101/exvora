@@ -1,0 +1,138 @@
+<section class="hero-section">
+  <!-- <div class="navbar-wrapper">
+    <nav class="navbar">
+      <div class="container">
+        <div class="nav-content">
+          <div class="logo-group">
+            <div class="logo-icon">
+              <mat-icon class="icon-building">apartment</mat-icon>
+            </div>
+            <span class="brand">Exvora</span>
+          </div>
+          <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#about">About</a>
+            <a routerLink="/auth/login">
+              <button class="btn-outline">Login</button>
+            </a>
+            <a routerLink="/auth/register">
+              <button class="btn-primary">Get Started</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div> -->
+
+  <div class="container">
+    <div class="grid-layout">
+      <div class="text-content">
+        <div class="badge">🚀 New: Advanced Trading Tools Available</div>
+        <h1 class="title">
+          The Future of
+          <span class="highlight">Crypto Trading</span>
+        </h1>
+        <p class="subtitle">
+          Create your own exchange, trade with confidence, and join millions of users in the world's most trusted
+          cryptocurrency platform.
+        </p>
+
+        <div class="actions">
+          <a routerLink="/auth/register">
+            <button class="btn btn-primary">
+              Start Trading Now
+              <i class="icon icon-arrow-right"></i>
+            </button>
+          </a>
+          <button class="btn btn-outline">
+            <i class="icon icon-play"></i>
+            Watch Demo
+          </button>
+        </div>
+
+        <div class="trust-section">
+          <div class="avatars">
+            @for (i of [1, 2, 3, 4]; track i) {
+            <div class="avatar"></div>
+            }
+          </div>
+          <div class="trust-text">
+            <p>Trusted by 500K+ traders worldwide</p>
+            <div class="stars">
+              @for (i of [1, 2, 3, 4, 5]; track i) {
+              <i class="icon icon-star"></i>
+              }
+              <span>4.9/5 rating</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-wrapper">
+        <div class="market-card">
+          <h2>Live Market Data</h2>
+          <div class="market-list">
+            @for (crypto of cryptos; track crypto.symbol) {
+            <div class="market-item">
+              <div>
+                <div class="symbol">{{ crypto.symbol }}</div>
+                <div class="name">{{ crypto.name }}</div>
+              </div>
+              <div class="price-data">
+                <div class="price">{{ crypto.price }}</div>
+                <div [ngClass]="crypto.change.startsWith('+') ? 'change up' : 'change down'">
+                  {{ crypto.change }}
+                </div>
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+        <div class="card-bg"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="grid">
+        @for (stat of stats; track stat) {
+        <div class="stat-item">
+          <div class="stat-icon">
+            {{ stat.icon }}
+          </div>
+          <div class="stat-value">{{ stat.value }}</div>
+          <div class="stat-label">{{ stat.label }}</div>
+        </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features-section">
+    <div class="container">
+      <div class="text-center heading">
+        <h2>Why Choose ExchangePro?</h2>
+        <p>
+          Built for traders, by traders. Experience the most advanced cryptocurrency exchange platform.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        @for (feature of features; track feature) {
+        <div class="feature-card">
+          <div class="feature-icon" [ngClass]="[feature.bgColor]">
+            <span [ngClass]="feature.color">{{ feature.icon }}</span>
+          </div>
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-desc">{{ feature.description }}</p>
+        </div>
+        }
+      </div>
+    </div>
+  </section>
+
+</section>

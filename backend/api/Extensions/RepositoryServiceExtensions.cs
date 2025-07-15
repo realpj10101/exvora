@@ -12,6 +12,7 @@ public static class RepositoryServiceExtensions
         services.AddScoped<IAccountRepository, AccountRepository>();
         services.AddScoped<IExchangeRepository, ExchangeRepository>();
         services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+        services.AddScoped<IExchangeCurrencyRepository, ExchangeCurrencyRepository>();
 
         return services;
     }

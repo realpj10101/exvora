@@ -11,7 +11,7 @@ public class AppVariablesExtensions
     public const string CollectionUsers = "users";
     public const string CollectionExchanges = "exchanges";
     public const string CollectionCurrencies = "currencies";
-    public const string CollectionExchangeCurrencies = "exchangeCurrencies";
+    public const string CollectionExchangeCurrencies = "exchange-currencies";
 
     public readonly static string[] AppVersion = ["1", "1.0.2"];
 

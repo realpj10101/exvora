@@ -2,6 +2,7 @@ using api.DTOs;
 using api.DTOs.Account;
 using api.DTOs.ExchangeCurrencyDtos;
 using api.DTOs.Helpers;
+using api.Enums;
 using api.Extensions;
 using api.Interfaces;
 using api.Models;
@@ -32,25 +33,10 @@ public class ExchangeCurrencyRepository : IExchangeCurrencyRepository
     public async Task<OperationResult> AddExchangeCurrencyAsync(AddExCurrency request,
         string exchangeName, CancellationToken cancellationToken)
     {
-        var symbol = request.Symbol.Trim().ToLowerInvariant();
-        var exch = exchangeName.Trim().ToLowerInvariant();
+        ExchangeCurrency? foundedExchangeCurrency = await _collection
+            .Find(doc => doc.Symbol.ToUpper() == request.Symbol.ToUpper()).FirstOrDefaultAsync(cancellationToken);
 
-        Task<ExchangeCurrency> dupTask =
-            _collection.Find(ex => ex.Symbol == symbol).FirstOrDefaultAsync(cancellationToken);
-
-        Task<ObjectId> exIdTask = _collectionExchange.AsQueryable()
-            .Where(doc => doc.Name == exch)
-            .Select(item => item.Id)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        Task<ObjectId> curIdTask = _collectionCurrency.AsQueryable()
-            .Where(doc => doc.Symbol == symbol)
-            .Select(item => item.Id)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        await Task.WhenAll(dupTask, exIdTask, curIdTask);
-
-        if (dupTask is not null)
+        if (foundedExchangeCurrency is not null)
         {
             return new OperationResult(
                 false,
@@ -61,7 +47,12 @@ public class ExchangeCurrencyRepository : IExchangeCurrencyRepository
             );
         }
 
-        if (exIdTask.Equals(null) || exIdTask.Result == ObjectId.Empty)
+        ObjectId? exchangeId = await _collectionExchange.AsQueryable()
+            .Where(exchange => exchange.Name.ToUpper() == exchangeName.ToUpper())
+            .Select(item => item.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (exchangeId.Equals(null) || exchangeId == ObjectId.Empty)
         {
             return new OperationResult(
                 false,
@@ -72,7 +63,28 @@ public class ExchangeCurrencyRepository : IExchangeCurrencyRepository
             );
         }
 
-        if (curIdTask.Equals(null) || exIdTask.Result == ObjectId.Empty)
+        ExchangeStatus exchangeStatus = await _collectionExchange.AsQueryable()
+            .Where(doc => doc.Id == exchangeId)
+            .Select(item => item.Status)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (exchangeStatus == ExchangeStatus.Pending || exchangeStatus == ExchangeStatus.Rejected)
+        {
+            return new OperationResult(
+                false,
+                Error: new CustomError(
+                    ErrorCode.IsApproved,
+                    Message: "Exchange is not approved for add currency."
+                )
+            );
+        }
+
+        ObjectId? currencyId = await _collectionCurrency.AsQueryable()
+            .Where(currency => currency.Symbol.ToUpper() == request.Symbol.ToUpper())
+            .Select(item => item.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (currencyId.Equals(null) || currencyId == ObjectId.Empty)
         {
             return new OperationResult(
                 false,
@@ -83,7 +95,7 @@ public class ExchangeCurrencyRepository : IExchangeCurrencyRepository
             );
         }
 
-        ExchangeCurrency exchangeCurrency = Mappers.ConvertAddExCurDtoToExCur(request, exIdTask.Result, curIdTask.Result);
+        ExchangeCurrency exchangeCurrency = Mappers.ConvertAddExCurDtoToExCur(request, exchangeId, currencyId);
 
         await _collection.InsertOneAsync(exchangeCurrency, null, cancellationToken);
 
@@ -93,51 +105,3 @@ public class ExchangeCurrencyRepository : IExchangeCurrencyRepository
         );
     }
 }
-
-
-// Old Code
-// ExchangeCurrency? foundedExchangeCurrency = await _collection
-//     .Find(doc => doc.Symbol.ToUpper() == request.Symbol.ToUpper()).FirstOrDefaultAsync(cancellationToken);
-//
-// if (foundedExchangeCurrency is not null)
-// {
-//     return new OperationResult(
-//         false,
-//         Error: new CustomError(
-//             ErrorCode.IsAlreadyExist,
-//             "Exchange currency already exists."
-//         )
-//     );
-// }
-//
-// ObjectId? exchangeId = await _collectionExchange.AsQueryable()
-//     .Where(exchange => exchange.Name.ToUpper() == exchangeName.ToUpper())
-//     .Select(item => item.Id)
-//     .FirstOrDefaultAsync(cancellationToken);
-//
-// if (exchangeId.Equals(null) || exchangeId == ObjectId.Empty)
-// {
-//     return new OperationResult(
-//         false,
-//         Error: new CustomError(
-//             ErrorCode.IsExchangeNotFound,
-//             "Exchange not found."
-//         )
-//     );
-// }
-//
-// ObjectId? currencyId = await _collectionCurrency.AsQueryable()
-//     .Where(currency => currency.Symbol.ToUpper() == request.Symbol.ToUpper())
-//     .Select(item => item.Id)
-//     .FirstOrDefaultAsync(cancellationToken);
-//
-// if (exchangeId.Equals(null) || exchangeId == ObjectId.Empty)
-// {
-//     return new OperationResult(
-//         false,
-//         Error: new CustomError(
-//             ErrorCode.IsCurrencyNotFound,
-//             "Currency not found."
-//         )
-//     );
-// }

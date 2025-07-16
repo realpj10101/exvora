@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
   imports: [
-    CommonModule, MatIconModule
+    CommonModule, MatIconModule, ReactiveFormsModule, FormsModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -70,4 +71,32 @@ export class HomeComponent {
       description: 'Integrate easily with your own systems and bots.'
     }
   ];
+
+  testimonials = [
+    {
+      name: 'Alice Johnson',
+      role: 'Pro Trader',
+      rating: 5,
+      content: 'ExchangePro is a game changer. Fast, secure, and incredibly user-friendly.',
+      avatar: 'https://i.pravatar.cc/100?img=1'
+    },
+    {
+      name: 'Mohamed Aziz',
+      role: 'Exchange Owner',
+      rating: 4,
+      content: 'Managing my own exchange has never been this easy. Highly recommended!',
+      avatar: 'https://i.pravatar.cc/100?img=2'
+    },
+    {
+      name: 'Lucia Chen',
+      role: 'Crypto Enthusiast',
+      rating: 5,
+      content: 'The tools and support provided by ExchangePro are unmatched.',
+      avatar: 'https://i.pravatar.cc/100?img=4'
+    }
+  ];
+
+  generateArray(n: number): number[] {
+    return Array(n).fill(0);
+  }
 }

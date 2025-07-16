@@ -1,30 +1,4 @@
 <section class="hero-section">
-  <!-- <div class="navbar-wrapper">
-    <nav class="navbar">
-      <div class="container">
-        <div class="nav-content">
-          <div class="logo-group">
-            <div class="logo-icon">
-              <mat-icon class="icon-building">apartment</mat-icon>
-            </div>
-            <span class="brand">Exvora</span>
-          </div>
-          <div class="nav-links">
-            <a href="#features">Features</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#about">About</a>
-            <a routerLink="/auth/login">
-              <button class="btn-outline">Login</button>
-            </a>
-            <a routerLink="/auth/register">
-              <button class="btn-primary">Get Started</button>
-            </a>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </div> -->
-
   <div class="container">
     <div class="grid-layout">
       <div class="text-content">
@@ -45,10 +19,6 @@
               <i class="icon icon-arrow-right"></i>
             </button>
           </a>
-          <button class="btn btn-outline">
-            <i class="icon icon-play"></i>
-            Watch Demo
-          </button>
         </div>
 
         <div class="trust-section">
@@ -135,4 +105,99 @@
     </div>
   </section>
 
+  <section class="testimonials-section">
+    <div class="container">
+      <div class="heading">
+        <h2>What Our Users Say</h2>
+        <p>Join thousands of satisfied traders and exchange owners</p>
+      </div>
+
+      <div class="testimonials-grid">
+        @for (testimonial of testimonials; track testimonial.name) {
+        <div class="testimonial-card">
+          <div class="stars">
+            @for (i of generateArray(testimonial.rating); track i) {
+            <span class="star">★</span>
+            }
+          </div>
+          <p class="content">"{{ testimonial.content }}"</p>
+          <div class="user">
+            <img [src]="testimonial.avatar || '/placeholder.svg'" [alt]="testimonial.name" class="avatar" />
+            <div class="user-info">
+              <div class="name">{{ testimonial.name }}</div>
+              <div class="role">{{ testimonial.role }}</div>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="title">Ready to Start Trading?</h2>
+      <p class="subtitle">
+        Join millions of users who trust ExchangePro for their cryptocurrency trading needs.
+      </p>
+
+      <div class="form-group">
+        <input type="email" placeholder="Enter your email" class="email-input" />
+        <a routerLink="/auth/register">
+          <button class="get-started-btn">Get Started</button>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand -->
+        <div class="footer-brand">
+          <div class="logo">
+            <div class="logo-icon">🏢</div>
+            <span class="logo-text">ExchangePro</span>
+          </div>
+          <p class="description">
+            The world's most trusted cryptocurrency exchange platform.
+          </p>
+        </div>
+
+        <!-- Product -->
+        <div class="footer-column">
+          <h3>Product</h3>
+          <ul>
+            <li><a href="#">Trading</a></li>
+            <li><a href="#">Exchange Creation</a></li>
+            <li><a href="#">API</a></li>
+          </ul>
+        </div>
+
+        <!-- Company -->
+        <div class="footer-column">
+          <h3>Company</h3>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Support -->
+        <div class="footer-column">
+          <h3>Support</h3>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Security</a></li>
+            <li><a href="#">Privacy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2024 ExchangePro. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 </section>

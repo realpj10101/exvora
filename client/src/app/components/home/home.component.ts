@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   imports: [
-    CommonModule, MatIconModule, ReactiveFormsModule, FormsModule
+    CommonModule, MatIconModule, ReactiveFormsModule, FormsModule, RouterModule, RouterLink
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'

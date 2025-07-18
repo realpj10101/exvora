@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-register',
   imports: [
-    FormsModule, ReactiveFormsModule, CommonModule
+    FormsModule, ReactiveFormsModule, CommonModule, MatIconModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'

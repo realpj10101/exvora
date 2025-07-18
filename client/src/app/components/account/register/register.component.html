@@ -1,69 +1,20 @@
-<section class="register-wrapper">
-    <div class="card">
-      <h1 *ngIf="step === 1">Create Account</h1>
-      <h1 *ngIf="step === 2">Security Setup</h1>
-  
-      <form [formGroup]="registerFg" (ngSubmit)="onSubmit()">
-        <div *ngIf="step === 1">
-          <div class="field-group">
-            <input formControlName="FirstNameCtrl" placeholder="First Name" />
-            <input formControlName="LastNameCtrl" placeholder="Last Name" />
-          </div>
-          <input formControlName="EmailCtrl" placeholder="Email Address" />
-          <input formControlName="PhoneNumberCtrl" placeholder="Phone Number" />
-          <select formControlName="CountryCtrl">
-            <option value="">Select your country</option>
-            <option value="us">United States</option>
-            <option value="uk">United Kingdom</option>
-            <option value="ca">Canada</option>
-          </select>
-          <button type="button" (click)="nextStep()">Continue</button>
-        </div>
-  
-        <div *ngIf="step === 2">
-          <div class="password-group">
-            <input
-              [type]="showPassword ? 'text' : 'password'"
-              formControlName="PasswordCtrl"
-              placeholder="Password"
-              (input)="passwordStrengthValue = passwordStrength(PasswordCtrl.value)"
-            />
-            <button type="button" (click)="togglePassword()">
-              {{ showPassword ? 'Hide' : 'Show' }}
-            </button>
-          </div>
-  
-          <div class="strength-bar">
-            <div class="bar" [style.width.%]="passwordStrengthValue * 33.3"></div>
-          </div>
-  
-          <div class="password-group">
-            <input
-              [type]="showConfirmPassword ? 'text' : 'password'"
-              formControlName="ConfirmPasswordCtrl"
-              placeholder="Confirm Password"
-            />
-            <button type="button" (click)="toggleConfirmPassword()">
-              {{ showConfirmPassword ? 'Hide' : 'Show' }}
-            </button>
-          </div>
-  
-          <label>
-            <input type="checkbox" [(ngModel)]="acceptTerms" /> I agree to the Terms and Privacy
-          </label>
-  
-          <label>
-            <input type="checkbox" [(ngModel)]="acceptMarketing" /> I want marketing emails
-          </label>
-  
-          <div class="btn-row">
-            <button type="button" (click)="prevStep()">Back</button>
-            <button type="submit" [disabled]="isLoading">
-              {{ isLoading ? 'Creating...' : 'Create Account' }}
-            </button>
-          </div>
-        </div>
-      </form>
+<section class="container">
+  <div class="home">
+    <img src="images/arrow.png" alt="" height="40px">
+    <h1>Back to home</h1>
+  </div>
+  <div class="label">
+    <div class="logo-group">
+      <div class="logo-icon">
+        <!-- <i class="icon-building"></i> -->
+        <mat-icon class="icon-building">apartment</mat-icon>
+      </div>
+      <span class="brand">Exvora</span>
     </div>
-  </section>
-  
+  </div>
+  <h1 class="create">Create Account</h1>
+  <p class="details">Join thousands of traders worldwilde</p>
+  <form action="">
+    
+  </form>
+</section>

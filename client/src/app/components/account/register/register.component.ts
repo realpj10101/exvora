@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { AccountService } from '../../../services/account.service';
+import { Register } from '../../../models/register.model';
 
 @Component({
   selector: 'app-register',
@@ -13,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class RegisterComponent {
   private _fb = inject(FormBuilder);
+  private _accountService = inject(AccountService);
 
   step: number = 1;
   showPassword: boolean = false;
@@ -92,5 +95,19 @@ export class RegisterComponent {
     if (/[A-Z]/.test(password)) strength++
     if (/[0-9]/.test(password)) strength++
     return strength;
+  }
+
+  register(): void {
+    let userInput: Register = {
+      firstName: this.FirstNameCtrl.value,
+      lastName: this.LastNameCtrl.value,
+      email: this.EmailCtrl.value,
+      phoneNumber: this.PhoneNumberCtrl.value,
+      country: this.CountryCtrl.value,
+      password: this.PasswordCtrl.value,
+      confirmPassword: this.ConfirmPasswordCtrl.value
+    }
+
+    this._accountService.register(userInput).subscribe();
   }
 }

@@ -9,13 +9,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
+import { PhoneFormatDirective } from '../../../directives/phone-format.directive';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-register',
+  standalone: true,
   imports: [
     FormsModule, ReactiveFormsModule, CommonModule,
     MatIconModule, MatSelectModule, MatInputModule,
-     MatFormFieldModule, MatButtonModule, MatDividerModule
+     MatFormFieldModule, MatButtonModule, MatDividerModule, PhoneFormatDirective, RouterModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'

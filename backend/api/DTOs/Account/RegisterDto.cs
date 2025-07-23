@@ -9,6 +9,7 @@ public record RegisterDto(
     string LastName,
     [MaxLength(PropLength.EmailMaxLength), RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
     string Email,
+    [RegularExpression(@"^(\+?\d{1,4}[\s-]?)?(\(?\d{2,4}\)?[\s-]?)?\d{3,4}[\s-]?\d{4}$", ErrorMessage = "Invalid phone number format")]
     string PhoneNumber,
     string Country,
     [DataType(DataType.Password)]

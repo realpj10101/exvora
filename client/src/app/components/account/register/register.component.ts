@@ -38,7 +38,7 @@ export class RegisterComponent {
     firstNameCtrl: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
     lastNameCtrl: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
     emailCtrl: ['', [Validators.required, Validators.pattern(/^([\w\.\-]+)@([\w\-]+)((\.(\w){2,5})+)$/), Validators.maxLength(50)]],
-    phoneNumberCtrl: ['', [Validators.required]],
+    phoneNumberCtrl: ['', [Validators.required,  Validators.pattern(/^(\+?\d{1,4}[\s-]?)?(\(?\d{2,4}\)?[\s-]?)?\d{3,4}[\s-]?\d{4}$/)]],
     countryCtrl: ['United States', [Validators.required]],
   });
 

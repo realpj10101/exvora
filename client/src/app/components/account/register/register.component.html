@@ -78,6 +78,9 @@
       @if (PhoneNumberCtrl.hasError("required")) {
       <mat-error>This field is required</mat-error>
       }
+      @else if (PhoneNumberCtrl.hasError("pattern")) {
+      <mat-error>Invalid phone number format</mat-error>
+      }
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Country</mat-label>
@@ -98,15 +101,15 @@
       <span class="line"></span>
     </div>
 
-    <div class="web-btn">
-      <button class="google">
+    <div class="social-btns">
+      <button class="social-button">
         <img src="images/google.png" alt="" height="25px">
-        <p>Google</p>
+        <span>Google</span>
       </button>
 
-      <button class="git">
+      <button class="social-button">
         <img src="images/github.png" alt="" height="25px">
-        <p>GitHub</p>
+        <span>GitHub</span>
       </button>
     </div>
   </form>

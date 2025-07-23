@@ -1,1 +1,76 @@
-<p>login works!</p>
+<section class="container">
+    <div class="home" routerLink="/home">
+        <img src="images/arrow.png" alt="" height="40px">
+        <h1>Back to home</h1>
+    </div>
+    <div class="label">
+        <div class="logo-group">
+            <div class="logo-icon">
+                <!-- <i class="icon-building"></i> -->
+                <mat-icon class="icon-building">apartment</mat-icon>
+            </div>
+            <span class="brand">Exvora</span>
+        </div>
+    </div>
+    <h1 class="create">Welcome Back</h1>
+    <p class="details">Sign in to your account to continue trading</p>
+    <form class="cred-form">
+        <div class="details">
+            <h1 class="label">Sign In</h1>
+            <p>Enter your credentials to access your account</p>
+        </div>
+        <mat-form-field appearance="outline">
+            <mat-label>Email Address</mat-label>
+            <input type="text" [formControl]="EmailCtrl" matInput>
+            @if (EmailCtrl.hasError("required")) {
+            <mat-error>This field is required</mat-error>
+            }
+            @else if (EmailCtrl.hasError("pattern")) {
+            <mat-error>Enter valid email</mat-error>
+            }
+            @else if (EmailCtrl.hasError("maxlength")) {
+            <mat-error>Max 50 characters</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input [type]="showPassword ? 'text' : 'password'" [formControl]="PasswordCtrl" matInput />
+            <button mat-icon-button matSuffix type="button" (click)="togglePassword()" tabindex="-1">
+                <mat-icon>{{ showPassword? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            @if (PasswordCtrl.hasError("required")) {
+            <mat-error>This field is required</mat-error>
+            }
+            @else if (PasswordCtrl.hasError("minlength")) {
+            <mat-error>Min 8 characters</mat-error>
+            }
+            @else if (PasswordCtrl.hasError("maxlength")) {
+            <mat-error>Max 16 characters</mat-error>
+            }
+        </mat-form-field>
+
+        <button mat-flat-button (click)="login()" [disabled]="loginFg.invalid">Sign In</button>
+
+        <div class="custom-divider">
+            <span class="line"></span>
+            <span class="text">OR CONTINUE WITH</span>
+            <span class="line"></span>
+        </div>
+
+        <div class="social-btns">
+            <button class="social-button">
+                <img src="images/google.png" alt="" height="25px">
+                <span>Google</span>
+            </button>
+
+            <button class="social-button">
+                <img src="images/github.png" alt="" height="25px">
+                <span>GitHub</span>
+            </button>
+        </div>
+
+        <div class="signup">
+            <p>Don't have an account? <a href="account/register">Sign up for free</a></p>
+        </div>
+    </form>
+</section>

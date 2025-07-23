@@ -1,0 +1,154 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem;
+
+    .home {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0, 5rem;
+        color: #9CA3AF;
+    }
+
+    .logo-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .logo-icon {
+            width: 2rem;
+            height: 2rem;
+            background: linear-gradient(to right, #2563eb, #8b5cf6);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .icon-building {
+                width: 1.25rem;
+                height: 1.25rem;
+                color: white;
+            }
+        }
+
+        .brand {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #111827;
+        }
+    }
+
+    .create {
+        font-size: 2.5rem;
+        padding: 0;
+        margin: 0;
+    }
+
+    .details {
+        color: #9CA3AF;
+        font-weight: bold;
+    }
+
+    .stepper-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .cred-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        border-radius: 10px;
+        background: #f7f6f6;
+        box-shadow: 20px 20px 60px #d4c9c9,
+            -20px -20px 60px #ffffff;
+        padding: 1rem;
+
+        .details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .label {
+                margin: 0;
+                color: black;
+                font-size: 2rem;
+            }
+        }
+
+        .intro {
+            display: flex;
+            gap: 1rem;
+        }
+
+        mat-form-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .custom-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 16px 0;
+
+            .line {
+                flex: 1;
+                height: 1px;
+                background-color: rgba(0, 0, 0, 0.12); // same as mat-divider default
+            }
+
+            .text {
+                padding: 0 12px;
+                font-size: 14px;
+                color: rgba(0, 0, 0, 0.6);
+                white-space: nowrap;
+            }
+        }
+
+        .social-btns {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+
+            .social-button {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                padding: 0.75rem;
+                font-weight: 500;
+                text-transform: none;
+                border: none;
+                cursor: pointer;
+                background-color: white;
+                border: rgba(0, 0, 0, 0.12) solid 2px;
+                border-radius: 8px;
+
+                .icon {
+                    height: 20px;
+                    width: 20px;
+                }
+            }
+        }
+
+        .signup {
+            text-align: center;
+            font-size: 0.875rem;
+            margin-top: 1rem;
+
+            a {
+                color: blue;
+                font-weight: 500;
+            }
+        }
+    }
+}

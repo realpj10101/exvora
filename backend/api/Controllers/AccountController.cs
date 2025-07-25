@@ -69,4 +69,23 @@ public class AccountController(IAccountRepository _accountRepository) : BaseApiC
 
         return loggedInDto is null ? Unauthorized("User is logged out or unauthorized. Login again") : loggedInDto;
     }
+
+    [AllowAnonymous]
+    [HttpPost("external-login")]
+    public async Task<ActionResult<LoggedInDto>> ExternalLogin(ExternalAuthDto request,
+        CancellationToken cancellationToken)
+    {
+        OperationResult<LoggedInDto> opResult = await _accountRepository.ExternalLoginAsync(request, cancellationToken);
+
+        return opResult.IsSuccess
+            ? Ok(opResult.Result)
+            : opResult.Error?.Code switch
+            {
+                ErrorCode.IsFailed => BadRequest(opResult.Error.Message),
+                ErrorCode.EmailFailed => BadRequest(opResult.Error.Message),
+                ErrorCode.NetIdentityFailed => BadRequest(opResult.Error.Message),
+                ErrorCode.TokenCreationFailed => BadRequest(opResult.Error.Message),
+                _ => BadRequest("External login failed! Try again or contact administrator.")
+            };
+    }
 }

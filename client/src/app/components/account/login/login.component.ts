@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import {AfterViewInit, Component, inject} from '@angular/core';
 import { AccountService } from '../../../services/account.service';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Login } from '../../../models/login.model';
@@ -9,9 +9,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { RouterModule } from '@angular/router';
+import { jwtDecode} from 'jwt-decode';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [
     MatIconModule, MatFormFieldModule,
     MatButtonModule, MatInputModule, MatDividerModule, RouterModule,
@@ -20,11 +22,15 @@ import { RouterModule } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements AfterViewInit{
   private _fb = inject(FormBuilder);
   private _accountService = inject(AccountService);
 
   showPassword: boolean = false;
+
+  ngAfterViewInit(): void {
+    google.accounts.id.initialize
+  }
 
   loginFg = this._fb.group({
     emailCtrl: ['', [Validators.required, Validators.pattern(/^([\w\.\-]+)@([\w\-]+)((\.(\w){2,5})+)$/), Validators.maxLength(50)]],

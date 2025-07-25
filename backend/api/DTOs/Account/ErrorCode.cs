@@ -18,5 +18,7 @@ public enum ErrorCode
     DuplicateCurrency,
     IsExchangeNotFound,
     IsCurrencyNotFound,
-    IsApproved
+    IsApproved,
+    EmailFailed,
+    TokenCreationFailed,
 }

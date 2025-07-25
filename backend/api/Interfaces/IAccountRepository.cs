@@ -9,4 +9,5 @@ public interface IAccountRepository
     public Task<OperationResult<LoggedInDto>> RegisterAsync(RegisterDto request, CancellationToken cancellationToken );
     public Task<OperationResult<LoggedInDto>> LoginAsync(LoginDto request, CancellationToken cancellationToken );
     public Task<LoggedInDto?> ReloadLoggedInUserAsync(string hashedUserId, string token, CancellationToken cancellationToken );
+    public Task<OperationResult<LoggedInDto>> ExternalLoginAsync(ExternalAuthDto request, CancellationToken cancellationToken );
 }

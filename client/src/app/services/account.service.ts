@@ -52,6 +52,21 @@ export class AccountService {
     )
   }
 
+  externalLogin(provider: string, idToken: string): Observable<LoggedInUser | null> {
+    const  payload = { provider, idToken}
+    return this._http.post<LoggedInUser>(this._baseApiUrl + 'external-login', payload).pipe(
+      map(res => {
+        if (res) {
+          this.setCurrentUser(res);
+          this.navigateToReturnUrl();
+          return res;
+        }
+
+        return  null;
+      })
+    )
+  }
+
   authorizeLoggedInUser(): void {
     this._http.get<ApiResponse>(this._baseApiUrl).pipe(
       take(1)).subscribe({
@@ -87,7 +102,7 @@ export class AccountService {
     this.loggedInUserSig.set(null);
 
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.clear(); // delete all browser's localStorage's items at once  
+      localStorage.clear(); // delete all browser's localStorage's items at once
     }
 
     this._router.navigateByUrl('account/login');

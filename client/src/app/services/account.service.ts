@@ -114,7 +114,7 @@ export class AccountService {
       if (returnUrl)
         this._router.navigate([returnUrl]);
       else
-        this._router.navigate(['dashboard']);
+        this._router.navigate(['user']);
 
       if (isPlatformBrowser(this.platformId)) // we make sure this code is ran on the browser and NOT server
         localStorage.removeItem('returnUrl');

@@ -13,6 +13,7 @@ public static class RepositoryServiceExtensions
         services.AddScoped<IExchangeRepository, ExchangeRepository>();
         services.AddScoped<ICurrencyRepository, CurrencyRepository>();
         services.AddScoped<IExchangeCurrencyRepository, ExchangeCurrencyRepository>();
+        services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 
         return services;
     }

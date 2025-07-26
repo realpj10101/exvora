@@ -61,6 +61,6 @@ export class ExchangeService {
       params = params.append('orderBy', exchangeParams.orderBy);
     }
 
-    return params;
+  return params;
   }
 }

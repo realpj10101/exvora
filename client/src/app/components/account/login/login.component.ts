@@ -22,15 +22,11 @@ import { jwtDecode} from 'jwt-decode';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements AfterViewInit{
+export class LoginComponent {
   private _fb = inject(FormBuilder);
   private _accountService = inject(AccountService);
 
   showPassword: boolean = false;
-
-  ngAfterViewInit(): void {
-    google.accounts.id.initialize
-  }
 
   loginFg = this._fb.group({
     emailCtrl: ['', [Validators.required, Validators.pattern(/^([\w\.\-]+)@([\w\-]+)((\.(\w){2,5})+)$/), Validators.maxLength(50)]],

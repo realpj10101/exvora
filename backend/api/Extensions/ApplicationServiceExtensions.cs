@@ -30,7 +30,7 @@ public static class ApplicationServiceExtensions
         services.AddCors(options =>
             {
                 options.AddDefaultPolicy(policy =>
-                    policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:4200"));
+                    policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:4200").WithExposedHeaders("Pagination"));
             });
         #endregion Cors
 

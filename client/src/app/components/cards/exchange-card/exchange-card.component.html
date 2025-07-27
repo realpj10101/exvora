@@ -1,1 +1,36 @@
-<p>exchange-card works!</p>
+<section class="container">
+    <div class="left">
+        <div class="top">
+            <p class="name">{{exchangeIn?.exchangeName}}</p>
+            @if (exchangeIn?.exchangeStatus === "Approved") {
+            <div class="app-badge">
+                <mat-icon class="icon">task_alt</mat-icon>
+                Approved
+            </div>
+            }
+            @else if (exchangeIn?.exchangeStatus === "Pending") {
+            <div class="pen-badge">
+                <mat-icon class="icon">schedule</mat-icon>
+                Pending
+            </div>
+            }
+            @else if (exchangeIn?.exchangeStatus === "Rejected") {
+            <div class="rej-badge">
+                <mat-icon class="icon">cancel</mat-icon>
+                Rejected
+            </div>
+            }
+        </div>
+        <div class="bottom">
+            <p class="created">Created: {{exchangeIn?.createdAt | date:'yyyy-MM-dd'}}</p>
+        </div>
+    </div>
+    <div class="right">
+        @if (exchangeIn?.exchangeStatus === "Approved") {
+        <button class="btn">
+            <mat-icon class="icon">currency_bitcoin</mat-icon>
+            Manage Currencies
+        </button>
+        }
+    </div>
+</section>

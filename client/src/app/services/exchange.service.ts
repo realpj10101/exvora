@@ -7,6 +7,7 @@ import { ExchangeParams } from '../models/helpers/exchange-params.model';
 import { PaginatedResult } from '../models/helpers/pagination-result.model';
 import { PaginationHandler } from '../extensions/paginationHandler';
 import { ApiResponse } from '../models/apiResponse.model';
+import { log } from 'console';
 
 @Injectable({
   providedIn: 'root'
@@ -51,16 +52,16 @@ export class ExchangeService {
 
   private getHttpParams(exchangeParams: ExchangeParams): HttpParams {
     let params = new HttpParams();
-
+    
     if (exchangeParams) {
-      if (exchangeParams.search)
-        params = params.append('seatch', exchangeParams.search);
+      if (exchangeParams.search)        
+        params = params.append('search', exchangeParams.search);
 
-      params = params.append('pageSize', exchangeParams.pageNumber);
+      params = params.append('pageSize', exchangeParams.pageSize);
       params = params.append('pageNumber', exchangeParams.pageNumber);
       params = params.append('orderBy', exchangeParams.orderBy);
     }
 
-  return params;
+    return params;
   }
 }

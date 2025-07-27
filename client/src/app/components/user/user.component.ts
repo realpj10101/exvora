@@ -1,19 +1,25 @@
-import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ExchangeService } from '../../services/exchange.service';
 import { ExchangeRes } from '../../models/exchange.model';
 import { Pagination } from '../../models/helpers/pagination.model';
 import { ExchangeParams } from '../../models/helpers/exchange-params.model';
 import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { PaginatedResult } from '../../models/helpers/pagination-result.model';
 import { Platform } from '@angular/cdk/platform';
 import { isPlatformBrowser } from '@angular/common';
+import { ExchangeCardComponent } from "../cards/exchange-card/exchange-card.component";
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-user',
   imports: [
-    MatPaginatorModule
+    MatPaginatorModule, MatFormFieldModule, MatInputModule, MatButtonModule,
+    ExchangeCardComponent, MatIconModule, ReactiveFormsModule, FormsModule
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
@@ -29,6 +35,7 @@ export class UserComponent implements OnInit {
   pageSizeOptions = [5, 10, 25];
   pageEvent: PageEvent | undefined;
   subscribed: Subscription | undefined;
+  pendingExchangesCount: number | undefined;
 
   filterFg = this._fB.group({
     searchCtrl: ['']
@@ -46,22 +53,29 @@ export class UserComponent implements OnInit {
       if (userStr) {
         const user = JSON.parse(userStr);
         if (user.token) {
-          this.getAll();
+          this.getAllUserExchanges();
         }
       }
     }
   }
 
-  getAll(): void {
-    if (this.exchangeParams)
-      this.subscribed = this._exchangeService.getAll(this.exchangeParams).subscribe({
+  getPendingExchangesCount(): number | undefined {
+    return this.exchanges?.filter(e => e.exchangeStatus === 'Pending').length;
+  }
+
+  getAllUserExchanges(): void {
+    if (this.exchangeParams) {
+      this.subscribed = this._exchangeService.getAllUserExchanges(this.exchangeParams).subscribe({
         next: (res: PaginatedResult<ExchangeRes[]>) => {
           if (res.body && res.pagination) {
             this.exchanges = res.body;
             this.pagination = res.pagination;
           }
+
+          this.pendingExchangesCount = this.getPendingExchangesCount();
         }
       })
+    }
   }
 
   handlePageEvent(e: PageEvent) {
@@ -73,7 +87,13 @@ export class UserComponent implements OnInit {
       this.exchangeParams.pageSize = e.pageSize;
       this.exchangeParams.pageNumber = e.pageIndex + 1;
 
-      this.getAll();
+      this.getAllUserExchanges();
+    }
+  }
+
+  updateExchangeParams(): void {
+    if (this.exchangeParams) {
+      this.exchangeParams.search = this.SearchCtrl.value;
     }
   }
 }

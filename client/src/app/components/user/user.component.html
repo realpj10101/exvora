@@ -1,10 +1,53 @@
 <section class="container">
-    <h1>Manage yout cryptocurrency exchanges</h1>
+    <p class="intro">Manage your cryptocurrency exchanges</p>
+
+    <div class="exchange-container">
+        <div class="exchange-card">
+            <div class="text-section">
+                <p class="title">Total Exchanges</p>
+                <span class="count">{{ exchanges?.length }}</span>
+            </div>
+            <div class="icon-section">
+                <mat-icon class="icon-building">apartment</mat-icon>
+            </div>
+        </div>
+
+        <div class="exchange-card pending">
+            <div class="text-section">
+                <p class="title">Pending Exchanges</p>
+                <span class="count">{{ pendingExchangesCount }}</span>
+            </div>
+            <div class="icon-section no-bg">
+                <mat-icon class="icon-building pending-icon">schedule</mat-icon>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <p class="y-exchange">Your Exchanges</p>
+        
+        <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Search Exchanges</mat-label>
+            <input matInput placeholder="Enter keyword" [formControl]="SearchCtrl" />
+            <button mat-icon-button matSuffix (click)="updateExchangeParams(); getAllUserExchanges()" aria-label="Search">
+                <mat-icon>search</mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
+
     <div class="bottom">
         <div class="exchanges">
             @for (exchange of exchanges; track $index) {
-                <h1>{{exchange.exchangeName}}</h1>
+            <app-exchange-card [exchangeInput]="exchange" />
             }
         </div>
+
+        @if (pagination && exchangeParams) {
+        <mat-paginator #paginator (page)="handlePageEvent($event)" [length]="pagination.totalItems"
+            [pageSize]="exchangeParams.pageSize" [disabled]="false" [showFirstLastButtons]="true"
+            [pageSizeOptions]="true ? pageSizeOptions : []" [hidePageSize]="false"
+            [pageIndex]="exchangeParams.pageNumber - 1" aria-label="Select page" class="paginator">
+        </mat-paginator>
+        }
     </div>
 </section>

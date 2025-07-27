@@ -17,12 +17,7 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
           Authorization: `Bearer ${loggedInUser.token}`          
         }
       });
-
-      console.log(loggedInUser.token);
-      
-    }
-
-    
+    }   
   }
 
   return next(req);

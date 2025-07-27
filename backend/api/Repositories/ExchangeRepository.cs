@@ -151,7 +151,7 @@ public class ExchangeRepository : IExchangeRepository
         UpdateDefinition<Exchange> updatedExchange = Builders<Exchange>.Update
             .Set(ex => ex.Status, ExchangeStatus.Approved);
 
-        await _collection.UpdateOneAsync(ex => ex.Name == exchangeName, updatedExchange,
+        await _collection.UpdateOneAsync(ex => ex.Name.ToUpper() == exchangeName.ToUpper(), updatedExchange,
             cancellationToken: cancellationToken);
 
         return new OperationResult(
@@ -179,7 +179,7 @@ public class ExchangeRepository : IExchangeRepository
         UpdateDefinition<Exchange> updatedExchange = Builders<Exchange>.Update
             .Set(ex => ex.Status, ExchangeStatus.Rejected);
 
-        await _collection.UpdateOneAsync(ex => ex.Name == exchangeName, updatedExchange,
+        await _collection.UpdateOneAsync(ex => ex.Name.ToUpper() == exchangeName.ToUpper(), updatedExchange,
             cancellationToken: cancellationToken);
 
         return new OperationResult(

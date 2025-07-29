@@ -14,13 +14,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { CreateExchangeComponent } from "../create-exchange/create-exchange.component";
 
 @Component({
   selector: 'app-user',
   imports: [
     MatPaginatorModule, MatFormFieldModule, MatInputModule, MatButtonModule,
-    ExchangeCardComponent, MatIconModule, ReactiveFormsModule, FormsModule
-  ],
+    ExchangeCardComponent, MatIconModule, ReactiveFormsModule, FormsModule,
+    CreateExchangeComponent
+],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
 })
@@ -36,6 +38,7 @@ export class UserComponent implements OnInit {
   pageEvent: PageEvent | undefined;
   subscribed: Subscription | undefined;
   pendingExchangesCount: number | undefined;
+  isFormOpen = false;
 
   filterFg = this._fB.group({
     searchCtrl: ['']
@@ -57,6 +60,14 @@ export class UserComponent implements OnInit {
         }
       }
     }
+  }
+
+  onExchangeCreated(): void {
+    this.getAllUserExchanges();
+  }
+
+  toggleForm() {
+    this.isFormOpen = !this.isFormOpen;
   }
 
   getPendingExchangesCount(): number | undefined {

@@ -25,15 +25,16 @@
 
     <div class="main">
         <p class="y-exchange">Your Exchanges</p>
-        
-        <mat-form-field appearance="outline" class="search-field">
-            <mat-label>Search Exchanges</mat-label>
-            <input matInput placeholder="Enter keyword" [formControl]="SearchCtrl" />
-            <button mat-icon-button matSuffix (click)="updateExchangeParams(); getAllUserExchanges()" aria-label="Search">
-                <mat-icon>search</mat-icon>
-            </button>
-        </mat-form-field>
+
+        <button class="btn" (click)="toggleForm()">
+            <mat-icon class="icon">add_2</mat-icon>
+            Create Exchange
+        </button>
     </div>
+
+    @if (isFormOpen) {
+    <app-create-exchange [isOpen]="isFormOpen" (toggle)="toggleForm()" (created)="onExchangeCreated()" />
+    }
 
     <div class="bottom">
         <div class="exchanges">

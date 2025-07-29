@@ -1,0 +1,47 @@
+<section class="container" [class.closed]="!isOpen">
+    <h1>Create New Exchange</h1>
+    <p>Fill in the details to create your exchange. It will be reviewed by our admin team.</p>
+    <form>
+        <div class="top">
+            <mat-form-field appearance="outline">
+                <mat-label>Exchange Name</mat-label>
+                <input type="text" [formControl]="NameCtrl" matInput>
+                @if (NameCtrl.hasError("required")) {
+                <mat-error>This field is required</mat-error>
+                }
+                @else if (NameCtrl.hasError("maxlength")) {
+                <mat-error>Max 50 characters</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Exchange Type</mat-label>
+                <mat-select [formControl]="TypeCtrl">
+                    @for (typeOption of typeOptions; track $index) {
+                    <mat-option [value]="typeOption">
+                        {{ typeOptionView[$index]}}
+                    </mat-option>
+                    }
+                </mat-select>
+                @if (TypeCtrl.hasError("required")) {
+                <mat-error>This field is required</mat-error>
+                }
+            </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea matInput [formControl]="DescriptionCtrl"></textarea>
+            @if (DescriptionCtrl.hasError("required")) {
+            <mat-error>This field is required</mat-error>
+            }
+            @else if (DescriptionCtrl.hasError("maxlength")) {
+            <mat-error>Max 500 characters</mat-error>
+            }
+        </mat-form-field>
+
+        <div class="actions">
+            <button mat-flat-button [disabled]="exchangeFg.invalid" (click)="createExchange()">Submit for Review</button>
+        </div>
+    </form>
+</section>

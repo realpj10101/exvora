@@ -6,4 +6,5 @@ namespace api.Interfaces;
 public interface ICurrencyRepository
 {
     public Task<OperationResult<CurrencyResponse>> AddCurrencyAsync(AddCurrencyDto request, CancellationToken cancellationToken);
+    public Task<List<CurrencyResponse>> GetAllAsync(CancellationToken cancellationToken);
 }

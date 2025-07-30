@@ -6,6 +6,7 @@ using api.Extensions;
 using api.Interfaces;
 using api.Models;
 using api.Settings;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace api.Repositories;
@@ -52,7 +53,7 @@ public class CurrencyRepository : ICurrencyRepository
                 )
             );
         }
-        
+
         await _collection.InsertOneAsync(currency, null, cancellationToken);
 
         return new OperationResult<CurrencyResponse>(
@@ -60,5 +61,28 @@ public class CurrencyRepository : ICurrencyRepository
             Mappers.ConvertCurrencyToCurrencyResponse(currency),
             Error: null
         );
+    }
+
+    public async Task<List<CurrencyResponse>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        List<Currency> currencies = await _collection.Find(new BsonDocument()).ToListAsync();
+
+        List<CurrencyResponse> currencyResponses = [];
+
+        foreach (Currency currency in currencies)
+        {
+            CurrencyResponse currencyResponse = new(
+                Symbol: currency.Symbol,
+                FullName: currency.FullName,
+                Price: currency.CurrencyPrice,
+                MarketCap: currency.MarketCap,
+                Category: currency.Category,
+                Status: currency.Status
+            );
+
+            currencyResponses.Add(currencyResponse);
+        }
+
+        return currencyResponses;
     }
 }

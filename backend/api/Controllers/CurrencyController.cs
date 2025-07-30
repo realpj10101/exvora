@@ -36,4 +36,17 @@ public class CurrencyController(ICurrencyRepository _currencyRepository, ITokenS
                 _ => BadRequest("Creation failed. Contact administrator")
             };
     }
+
+    [HttpGet]
+    public async Task<ActionResult<List<CurrencyResponse>>> GetAll(CancellationToken cancellationToken)
+    {
+        List<CurrencyResponse> currencies = await _currencyRepository.GetAllAsync(cancellationToken);
+
+        if (currencies.Count == 0)
+        {
+            return NoContent();
+        }
+
+        return currencies;
+    }
 }

@@ -17,8 +17,8 @@ export class ExchangeCurrencyService {
   private readonly _baseApiUrl = environment.apiUrl + 'api/exchangecurrency/';
   private readonly _paginationHandler = new PaginationHandler();
 
-  AddExchangeCurrency(request: ExchangeCurrencyReq): Observable<ApiResponse> {
-    return this._http.post<ApiResponse>(this._baseApiUrl + 'add-currency', request);
+  AddExchangeCurrency(request: ExchangeCurrencyReq, exchangeName: string): Observable<ApiResponse> {
+    return this._http.post<ApiResponse>(this._baseApiUrl + 'add-currency/' + exchangeName, request);
   }
 
   getAll(exchangeParams: ExchangeParams, exchangeName: string): Observable<PaginatedResult<ExchangeCurrencyRes[]>> {

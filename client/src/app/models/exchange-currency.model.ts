@@ -6,7 +6,6 @@ export interface ExchangeCurrencyReq {
 }
 
 export interface ExchangeCurrencyRes {
-    exchangeRes: ExchangeRes;
-    currencyRes: CurrencyRes;
+    exchange: ExchangeRes;
+    currencies: CurrencyRes[];
 }
-

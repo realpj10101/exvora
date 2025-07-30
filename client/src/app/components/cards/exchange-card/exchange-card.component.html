@@ -27,7 +27,7 @@
     </div>
     <div class="right">
         @if (exchangeIn?.exchangeStatus === "Approved") {
-        <button class="btn">
+        <button class="btn" [routerLink]="['/currencies/' + exchangeIn?.exchangeName]">
             <mat-icon class="icon">currency_bitcoin</mat-icon>
             Manage Currencies
         </button>

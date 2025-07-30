@@ -15,13 +15,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CreateExchangeComponent } from "../create-exchange/create-exchange.component";
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-user',
   imports: [
     MatPaginatorModule, MatFormFieldModule, MatInputModule, MatButtonModule,
     ExchangeCardComponent, MatIconModule, ReactiveFormsModule, FormsModule,
-    CreateExchangeComponent
+    CreateExchangeComponent, RouterModule
 ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'

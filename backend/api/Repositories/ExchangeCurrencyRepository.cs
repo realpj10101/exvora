@@ -81,7 +81,7 @@ public class ExchangeCurrencyRepository : IExchangeCurrencyRepository
                 false,
                 Error: new CustomError(
                     ErrorCode.IsAlreadyExist,
-                    "This exchange already lists that currency."                )
+                    "This exchange already lists that currency.")
             );
         }
 
@@ -139,12 +139,19 @@ public class ExchangeCurrencyRepository : IExchangeCurrencyRepository
                 }
             ).ToListAsync(cancellationToken);
 
-        var mappedList = rawResult.Select(item => new ExchangeCurrencyRes(
-            Mappers.ConvertExchangeToExchangeRes(item.Exchange),
-            Mappers.ConvertCurrencyToCurrencyResponse(item.Currency)
-        )).ToList();
+        var groupedResult = rawResult
+            .GroupBy(item => item.Exchange.Id)
+            .Select(group => new ExchangeCurrencyRes(
+                Mappers.ConvertExchangeToExchangeRes(group.First().Exchange),
+                group.Select(cur => Mappers.ConvertCurrencyToCurrencyResponse(cur.Currency)).ToList()
+            )).ToList();
+
+        // var mappedList = rawResult.Select(item => new ExchangeCurrencyRes(
+        //     Mappers.ConvertExchangeToExchangeRes(item.Exchange),
+        //     Mappers.ConvertCurrencyToCurrencyResponse(item.Currency)
+        // )).ToList();
 
         return await PagedList<ExchangeCurrencyRes>
-            .CreatePagedListAsync(mappedList, exchangeParams.PageNumber, exchangeParams.PageSize, cancellationToken);
+            .CreatePagedListAsync(groupedResult, exchangeParams.PageNumber, exchangeParams.PageSize, cancellationToken);
     }
 }

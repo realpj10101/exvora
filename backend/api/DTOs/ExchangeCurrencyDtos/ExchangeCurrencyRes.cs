@@ -5,5 +5,6 @@ namespace api.DTOs.ExchangeCurrencyDtos;
 
 public record ExchangeCurrencyRes(
     ExchangeRes Exchange,
-    CurrencyResponse Currency
+    List<CurrencyResponse> Currencies
+    // CurrencyResponse Currency
 );

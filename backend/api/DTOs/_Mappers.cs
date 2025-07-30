@@ -121,12 +121,12 @@ public static class Mappers
         );
     }
 
-    public static ExchangeCurrencyRes ConvertExCurToExCurRes(ExchangeRes exchangeRes,
-        CurrencyResponse currencyResponse)
-    {
-        return new(
-            Exchange: exchangeRes,
-            Currency: currencyResponse
-        );
-    }
+    // public static ExchangeCurrencyRes ConvertExCurToExCurRes(ExchangeRes exchangeRes,
+    //     CurrencyResponse currencyResponse)
+    // {
+    //     return new(
+    //         Exchange: exchangeRes,
+    //         Currency: currencyResponse
+    //     );
+    // }
 }

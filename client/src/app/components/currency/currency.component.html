@@ -9,6 +9,40 @@
             <p>Manage currencies for your approved exchanges</p>
         </div>
     </div>
+
+    <div class="exchanges-wrapper">
+        <div class="exchange-con">
+            @for (exchange of exchanges; track $index) {
+            <div class="exchange-card">
+                <div class="top">
+                    <p class="exchange-name">{{ exchange.exchangeName }}</p>
+                    <span class="status-badge" [ngClass]="exchange.exchangeStatus.toLowerCase()">
+                        {{ exchange.exchangeStatus }}
+                    </span>
+                </div>
+                <div class="bottom-side">
+                    <p class="exchange-description">{{ exchange.description }}</p>
+                    @if (exchange.exchangeStatus === "Approved") {
+                    <button class="btn" [routerLink]="['/currencies/' + exchange.exchangeName]">
+                        <mat-icon class="icon">currency_bitcoin</mat-icon>
+                        Manage Currencies
+                    </button>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+
+        <div class="pagination">
+            <button (click)="goToPreviousPage()" [disabled]="!exchangesPagination">
+                <mat-icon class="icon">arrow_back</mat-icon>
+            </button>
+            <button (click)="goToNextPage()" [disabled]="!exchangesPagination">
+                <mat-icon class="icon">arrow_forward</mat-icon>
+            </button>
+        </div>
+    </div>
+
     <div class="main">
         @for (exCur of exchangeCurrencies; track $index) {
         <div class="exchange-block">
@@ -49,10 +83,10 @@
                     <td mat-cell *matCellDef="let element">
                         <span class="first-letter">
                             {{ element.currency.symbol.slice(0, 2) | uppercase }}
-                          </span>
-                          <span class="full-symbol">
+                        </span>
+                        <span class="full-symbol">
                             {{ element.currency.symbol | uppercase }}
-                          </span>
+                        </span>
                     </td>
                 </ng-container>
 

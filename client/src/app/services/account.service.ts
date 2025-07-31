@@ -53,7 +53,7 @@ export class AccountService {
   }
 
   externalLogin(provider: string, idToken: string): Observable<LoggedInUser | null> {
-    const  payload = { provider, idToken}
+    const payload = { provider, idToken }
     return this._http.post<LoggedInUser>(this._baseApiUrl + 'external-login', payload).pipe(
       map(res => {
         if (res) {
@@ -62,7 +62,7 @@ export class AccountService {
           return res;
         }
 
-        return  null;
+        return null;
       })
     )
   }
@@ -110,14 +110,38 @@ export class AccountService {
 
   private navigateToReturnUrl(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const returnUrl = localStorage.getItem('returnUrl');
-      if (returnUrl)
-        this._router.navigate([returnUrl]);
-      else
-        this._router.navigate(['user']);
+      let loggedInUserStr: string | null = localStorage.getItem('loggedInUser');
 
-      if (isPlatformBrowser(this.platformId)) // we make sure this code is ran on the browser and NOT server
-        localStorage.removeItem('returnUrl');
+      if (loggedInUserStr) {
+        let loggedInUser: LoggedInUser = JSON.parse(loggedInUserStr);
+
+        let roles: string[] = loggedInUser.roles;
+
+        if (roles.includes('member')) {
+          if (isPlatformBrowser(this.platformId)) {
+            const returnUrl = localStorage.getItem('returnUrl');
+            if (returnUrl)
+              this._router.navigate([returnUrl]);
+            else
+              this._router.navigate(['user']);
+
+            if (isPlatformBrowser(this.platformId)) // we make sure this code is ran on the browser and NOT server
+              localStorage.removeItem('returnUrl');
+          }
+        }
+        else {
+          if (isPlatformBrowser(this.platformId)) {
+            const returnUrl = localStorage.getItem('returnUrl');
+            if (returnUrl)
+              this._router.navigate([returnUrl]);
+            else
+              this._router.navigate(['admin']);
+
+            if (isPlatformBrowser(this.platformId)) // we make sure this code is ran on the browser and NOT server
+              localStorage.removeItem('returnUrl');
+          }
+        }
+      }
     }
   }
 }

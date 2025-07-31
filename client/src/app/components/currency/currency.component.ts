@@ -15,6 +15,8 @@ import { MatInputModule } from '@angular/material/input';
 import { CurrencyRes } from '../../models/currency.model';
 import { MatDialog } from '@angular/material/dialog';
 import { AddCurrencyComponent } from '../_modals/add-currency/add-currency.component';
+import { ExchangeRes } from '../../models/exchange.model';
+import { ExchangeService } from '../../services/exchange.service';
 
 @Component({
   selector: 'app-currency',
@@ -28,6 +30,7 @@ import { AddCurrencyComponent } from '../_modals/add-currency/add-currency.compo
 })
 export class CurrencyComponent implements OnInit {
   private _exchangeCurrencyService = inject(ExchangeCurrencyService);
+  private _exchangeService = inject(ExchangeService);
   private _route = inject(ActivatedRoute);
   private _platformId = inject(PLATFORM_ID);
   readonly dialog = inject(MatDialog);
@@ -39,10 +42,20 @@ export class CurrencyComponent implements OnInit {
   pageEvent: PageEvent | undefined;
   dataSource = new MatTableDataSource<{ currency: CurrencyRes }>();
   displayedColumns: string[] = ['position', 'symbol', 'fullName', 'price', 'category', 'status'];
-
+  exchanges: ExchangeRes[] | undefined;
+  pageSizeOptions = [3, 9, 12];
+  exchangesPagination: Pagination | undefined;
 
   ngOnInit(): void {
     this.exchangeParams = new ExchangeParams();
+
+    this.exchangeParams = {
+      pageNumber: 1,
+      pageSize: 3,
+      search: '',
+      orderBy: ''
+      // ...other filters if needed
+    };
 
     if (isPlatformBrowser(this._platformId)) {
       const userStr = localStorage.getItem('loggedInUser');
@@ -50,6 +63,7 @@ export class CurrencyComponent implements OnInit {
         const user = JSON.parse(userStr);
         if (user.token) {
           this.getAllExchangeCurrencies();
+          this.getAllUserExchanges();
         }
       }
     }
@@ -101,6 +115,33 @@ export class CurrencyComponent implements OnInit {
             }
           }
         })
+    }
+  }
+
+  getAllUserExchanges(): void {
+    if (this.exchangeParams) {
+      this._exchangeService.getAllUserExchanges(this.exchangeParams).subscribe({
+        next: (res: PaginatedResult<ExchangeRes[]>) => {
+          if (res.body && res.pagination) {
+            this.exchanges = res.body;
+            this.exchangesPagination = res.pagination;
+          }
+        }
+      })
+    }
+  } 
+
+  goToNextPage(): void {
+    if (this.exchangeParams && this.exchangesPagination && this.exchangesPagination.currentPage < this.exchangesPagination.totalPages) {
+      this.exchangeParams.pageNumber++;
+      this.getAllUserExchanges();
+    }
+  }
+  
+  goToPreviousPage(): void {
+    if (this.exchangeParams && this.exchangesPagination && this.exchangesPagination.currentPage > 1) {
+      this.exchangeParams.pageNumber--;
+      this.getAllUserExchanges();
     }
   }
 

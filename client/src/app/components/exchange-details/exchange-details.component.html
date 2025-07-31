@@ -1,0 +1,20 @@
+<div class="exchange-dialog">
+  <h2>Exchange Details</h2>
+
+  <div class="details">
+    <div><strong>Name:</strong> {{ data.exchangeName }}</div>
+    <div><strong>Type:</strong> {{ data.exchangeType }}</div>
+    <div>
+      <strong>Status:</strong>
+      <span class="status" [ngClass]="data.exchangeStatus.toLowerCase()">
+        {{ data.exchangeStatus }}
+      </span>
+    </div>
+    <div><strong>Created:</strong> {{ data.createdAt | date:'yyyy-MM-dd' }}</div>
+  </div>
+
+  <div class="actions">
+    <button mat-stroked-button class="reject" (click)="rejectExchange()">Reject</button>
+    <button mat-flat-button class="approve" (click)="approveExchange()">Approve</button>
+  </div>
+</div>

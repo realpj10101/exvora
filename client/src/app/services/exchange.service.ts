@@ -39,15 +39,15 @@ export class ExchangeService {
   }
 
   approveExchange(exchangeName: string): Observable<ApiResponse> {
-    return this._http.put<ApiResponse>(this._baseApiUrl + 'approve-exchange' + exchangeName, null);
+    return this._http.put<ApiResponse>(this._baseApiUrl + 'approve-exchange/' + exchangeName, null);
   }
 
   rejectExchange(exchangeName: string): Observable<ApiResponse> {
-    return this._http.put<ApiResponse>(this._baseApiUrl + 'reject-exchange' + exchangeName, null);
+    return this._http.put<ApiResponse>(this._baseApiUrl + 'reject-exchange/' + exchangeName, null);
   }
 
   updateExchange(req: UpadateExchange, exchangeName: string): Observable<ApiResponse> {
-    return this._http.put<ApiResponse>(this._baseApiUrl + 'update-exchange' + exchangeName, req);
+    return this._http.put<ApiResponse>(this._baseApiUrl + 'update-exchange/' + exchangeName, req);
   }
 
   private getHttpParams(exchangeParams: ExchangeParams): HttpParams {

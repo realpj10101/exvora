@@ -13,6 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { ExchangeDetailsComponent } from '../exchange-details/exchange-details.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-exchanges',
@@ -26,6 +28,7 @@ export class ExchangesComponent implements OnInit {
   private _exchangeService = inject(ExchangeService);
   private _fb = inject(FormBuilder);
   private _platformId = inject(PLATFORM_ID);
+  readonly dialog = inject(MatDialog);
 
   exchanes: ExchangeRes[] | undefined;
   pagnation: Pagination | undefined;
@@ -40,6 +43,18 @@ export class ExchangesComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  openDialog(exchange: ExchangeRes) {
+    const dialogRef = this.dialog.open(ExchangeDetailsComponent, {
+      data: exchange
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'created') {
+        this.getAll();
+      }
+    });
+  }
+
   getAll(): void {
     if (this.exchangeParams) {
       this._exchangeService.getAll(this.exchangeParams).subscribe({
@@ -47,9 +62,9 @@ export class ExchangesComponent implements OnInit {
           if (res.body && res.pagination) {
             this.exchanes = res.body;
             this.pagnation = res.pagination;
-  
+
             this.dataSource = new MatTableDataSource(res.body);
-  
+
             this.dataSource.filterPredicate = (data: ExchangeRes, filter: string) => {
               const filterText = filter.trim().toLowerCase();
               return (
@@ -60,10 +75,9 @@ export class ExchangesComponent implements OnInit {
             };
           }
         },
-      }); 
+      });
     }
   }
-  
 
   ngOnInit(): void {
     this.exchangeParams = new ExchangeParams();

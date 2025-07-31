@@ -104,7 +104,7 @@ export class CurrencyComponent implements OnInit {
               this.dataSource = new MatTableDataSource(flattened);
 
               this.dataSource.filterPredicate = (data: { currency: CurrencyRes }, filter: string) => {
-                const filterText = filter.trim().toLowerCase();
+                const filterText = filter.trim().toLowerCase(); 
                 return (
                   data.currency.symbol.toLowerCase().includes(filterText) ||
                   data.currency.fullName.toLowerCase().includes(filterText) ||

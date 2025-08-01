@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, Signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, RouterModule } from '@angular/router';
+import { AccountService } from '../../services/account.service';
+import { LoggedInUser } from '../../models/logged-in-user.model';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +14,16 @@ import { RouterLink, RouterModule } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  accountService = inject(AccountService);
+  loggedInUserSig: Signal<LoggedInUser | null> | undefined;
+
+  ngOnInit(): void {
+    console.log(this.loggedInUserSig);
+    
+    this.loggedInUserSig = this.accountService.loggedInUserSig;
+  }
+
   cryptos = [
     { symbol: 'BTC', name: 'Bitcoin', price: '$45,230', change: '+2.5%' },
     { symbol: 'ETH', name: 'Ethereum', price: '$3,180', change: '-1.2%' },

@@ -105,7 +105,7 @@ export class AccountService {
       localStorage.clear(); // delete all browser's localStorage's items at once
     }
 
-    this._router.navigateByUrl('account/login');
+    this._router.navigateByUrl('/account/login');
   }
 
   private navigateToReturnUrl(): void {

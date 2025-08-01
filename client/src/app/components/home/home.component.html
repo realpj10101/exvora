@@ -13,12 +13,27 @@
         </p>
 
         <div class="actions">
-          <a routerLink="/account/register">
-            <button class="btn btn-primary">
-              Start Trading Now
-              <i class="icon icon-arrow-right"></i>
-            </button>
-          </a>
+          @if (accountService.loggedInUserSig(); as user) {
+          <!-- <ng-container *ngIf="loggedInUserSig && loggedInUserSig() as user; else notLog"> -->
+          @if (user.roles.includes("admin")) {
+          <button class="btn btn-primary" routerLink="/admin">
+            Manage Exchanges
+          </button>
+          }
+          @else {
+          <button class="btn btn-primary" routerLink="/user">
+            Start Now
+          </button>
+          }
+          <!-- </ng-container> -->
+          }
+          @else {
+          <!-- <ng-template #notLog> -->
+          <button class="btn btn-primary" routerLink="/account/register">
+            Start Trading Now
+          </button>
+          <!-- </ng-template> -->
+          }
         </div>
 
         <div class="trust-section">

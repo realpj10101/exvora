@@ -44,8 +44,8 @@ public class TokenService : ITokenService
             return null;
 
         var claims = new List<Claim> {
-            new Claim(JwtRegisteredClaimNames.NameId, hashedUserId)
-            // new Claim(JwtRegisteredClaimNames.Email, appUser.Email)
+            new Claim(JwtRegisteredClaimNames.NameId, hashedUserId)          
+              // new Claim(JwtRegisteredClaimNames.Email, appUser.Email)
         };
 
         // Get user's roles and add them all into claims

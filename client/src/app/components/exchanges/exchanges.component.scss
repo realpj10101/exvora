@@ -1,5 +1,7 @@
 .container {
   padding: 2rem 5rem;
+  font-family: 'Inter', sans-serif;
+  color: #1f2937;
 
   .top {
     display: flex;
@@ -19,62 +21,135 @@
 
       h1 {
         margin: 0;
-        font-size: 2rem;
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: #111827;
       }
 
       p {
-        color: #6b7280; // Tailwind's gray-500
+        color: #6b7280;
         margin: 0;
+        font-size: 0.95rem;
       }
     }
   }
 
   .bottom {
-    border: rgba(0, 0, 0, 0.1) 2px solid;
-    border-radius: 10px;
-    padding: 1rem;
-    margin-top: 2rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-direction: column;
 
     .top-side {
       display: flex;
       flex-direction: column;
+      margin-bottom: 1rem;
 
       h1 {
         margin: 0;
-        font-size: 2rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1f2937;
       }
 
       p {
-        color: #4B5563;
+        color: #6b7280;
+        font-size: 0.95rem;
       }
 
-      .table {
-        // width: 100%;
-
-        .table-source {
-          width: 100%;
-          border: 1px solid #e0e0e0;
-          border-radius: 8px;
-          overflow: hidden;
-
-          th.mat-header-cell {
-              background-color: #f5f5f5;
-              font-weight: bold;
-              color: #333;
-              padding: 12px;
-          }
-
-          td.mat-cell {
-              padding: 12px;
-              color: #555;
-          }
-
-          tr.mat-row:hover {
-              background-color: #f0f0f0;
-          }
+      mat-form-field {
+        margin-top: 1rem;
+        width: 100%;
+        max-width: 300px;
       }
+    }
+
+    .table {
+      margin-top: 1rem;
+      overflow-x: auto;
+
+      .table-source {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #f9fafb;
+        border-radius: 10px;
+        overflow: hidden;
+
+        th.mat-header-cell {
+          background-color: #f3f4f6;
+          color: #374151;
+          font-weight: 600;
+          font-size: 0.9rem;
+          padding: 14px;
+          text-align: left;
+          border-bottom: 1px solid #e5e7eb;
+        }
+
+        td.mat-cell {
+          padding: 14px;
+          font-size: 0.9rem;
+          color: #374151;
+          border-bottom: 1px solid #f3f4f6;
+          vertical-align: middle;
+
+          .exchange-name {
+            font-weight: 600;
+            color: #1f2937;
+          }
+
+          .created-at {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 4px;
+          }
+        }
+
+        tr.mat-row:last-child td {
+          border-bottom: none;
+        }
+
+        tr.mat-row:hover {
+          background-color: #f1f5f9;
+        }
+
+        .status-badge {
+          padding: 4px 12px;
+          border-radius: 9999px;
+          font-weight: 600;
+          font-size: 0.8rem;
+          text-transform: capitalize;
+          display: inline-block;
+
+          &.approved {
+            background-color: #dcfce7;
+            color: #166534;
+          }
+
+          &.pending {
+            background-color: #fef9c3;
+            color: #854d0e;
+          }
+
+          &.rejected {
+            background-color: #fee2e2;
+            color: #991b1b;
+          }
+        }
+      }
+
+      button[mat-icon-button] {
+        color: #3b82f6;
+
+        mat-icon {
+          font-size: 20px;
+        }
+
+        &:hover {
+          background-color: #e0f2fe;
+        }
       }
     }
   }

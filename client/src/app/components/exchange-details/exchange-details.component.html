@@ -2,19 +2,38 @@
   <h2>Exchange Details</h2>
 
   <div class="details">
-    <div><strong>Name:</strong> {{ data.exchangeName }}</div>
-    <div><strong>Type:</strong> {{ data.exchangeType }}</div>
-    <div>
-      <strong>Status:</strong>
-      <span class="status" [ngClass]="data.exchangeStatus.toLowerCase()">
-        {{ data.exchangeStatus }}
+    <div class="item">
+      <span class="label">Name:</span>
+      <span class="value">{{ data.exchangeName }}</span>
+    </div>
+    <div class="item">
+      <span class="label">Type:</span>
+      <span class="value">{{ data.exchangeType }}</span>
+    </div>
+    <div class="item">
+      <span class="label">Status:</span>
+      <span class="value">
+        <span class="status" [ngClass]="data.exchangeStatus.toLowerCase()">
+          {{ data.exchangeStatus }}
+        </span>
       </span>
     </div>
-    <div><strong>Created:</strong> {{ data.createdAt | date:'yyyy-MM-dd' }}</div>
+    <div class="item">
+      <span class="label">Created:</span>
+      <span class="value">{{ data.createdAt | date:'yyyy-MM-dd' }}</span>
+    </div>
   </div>
 
   <div class="actions">
-    <button at-stroked-button class="reject" (click)="rejectExchange()">Reject</button>
-    <button mat-flat-button class="approve" (click)="approveExchange()">Approve</button>
+    @if (data.exchangeStatus === "Approved") {
+    <button mat-stroked-button class="rej-btn" (click)="rejectExchange()">Reject</button>
+    }
+    @else if (data.exchangeStatus === "Rejected") {
+    <button mat-flat-button class="app-btn" (click)="approveExchange()">Approve</button>
+    }
+    @else if (data.exchangeStatus === "Pending") {
+    <button mat-stroked-button class="rej-btn" (click)="rejectExchange()">Reject</button>
+    <button mat-flat-button class="app-btn" (click)="approveExchange()">Approve</button>
+    }
   </div>
 </div>

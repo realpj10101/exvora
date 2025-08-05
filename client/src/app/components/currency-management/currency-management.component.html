@@ -12,12 +12,22 @@
     <div class="bottom">
         <div class="bottom">
             <div class="top-side">
-                <h1>Global Currency</h1>
-                <p>Add, edit, and manage cryptocurrency listings</p>
-                <mat-form-field appearance="outline">
-                    <mat-label>Search</mat-label>
-                    <input type="text" (keyup)="applyFilter($event)" matInput>
-                </mat-form-field>
+                <div class="left">
+                    <h1>Global Currency</h1>
+                    <p>Add, edit, and manage cryptocurrency listings</p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Search</mat-label>
+                        <input type="text" (keyup)="applyFilter($event)" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="right">
+                    <div class="add-cur">
+                        <button class="btn" (click)="openDialog()">
+                            <mat-icon class="icon">add_2</mat-icon>
+                            Add Currency
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="table">
                 <table mat-table [dataSource]="dataSource" class="table-source">

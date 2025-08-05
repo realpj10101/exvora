@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
+import { CreateCurrencyComponent } from '../create-currency/create-currency.component';
 
 @Component({
   selector: 'app-currency-management',
@@ -21,7 +22,7 @@ import { RouterModule } from '@angular/router';
 export class CurrencyManagementComponent implements OnInit {
   private _currencyService = inject(CurrencyService);
   private _platformId = inject(PLATFORM_ID);
-  readonly dailog = inject(MatDialog);
+  readonly dialog = inject(MatDialog);
 
   currrencies: CurrencyRes[] | undefined;
   dataSource = new MatTableDataSource<CurrencyRes>();
@@ -37,6 +38,16 @@ export class CurrencyManagementComponent implements OnInit {
         }
       }
     }
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(CreateCurrencyComponent)
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'created') {
+        this.getAll();
+      }
+    })
   }
 
   applyFilter(event: Event): void {

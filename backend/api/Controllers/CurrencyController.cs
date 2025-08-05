@@ -38,6 +38,7 @@ public class CurrencyController(ICurrencyRepository _currencyRepository, ITokenS
     }
 
     [HttpGet]
+    [Authorize(Roles = "admin")]
     public async Task<ActionResult<List<CurrencyResponse>>> GetAll(CancellationToken cancellationToken)
     {
         List<CurrencyResponse> currencies = await _currencyRepository.GetAllAsync(cancellationToken);

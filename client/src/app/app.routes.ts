@@ -7,6 +7,9 @@ import { ExchangeCardComponent } from './components/cards/exchange-card/exchange
 import { CurrencyComponent } from './components/currency/currency.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { ExchangesComponent } from './components/exchanges/exchanges.component';
+import { CurrencyManagementComponent } from './components/currency-management/currency-management.component';
+import { inject, PLATFORM_ID } from '@angular/core';
+import { NoAccessComponent } from './components/errors/no-access/no-access.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -16,5 +19,7 @@ export const routes: Routes = [
     { path: 'user', component: UserComponent },
     { path: 'currencies/:exchangeName', component: CurrencyComponent },
     { path: 'admin', component: AdminComponent },
-    { path: 'admin/exchanges', component: ExchangesComponent}
+    { path: 'admin/exchanges', component: ExchangesComponent},
+    { path: 'admin/currencies', component: CurrencyManagementComponent},
+    { path: 'no-access', component: NoAccessComponent}
 ];

@@ -30,7 +30,7 @@ export class ExchangesComponent implements OnInit {
   private _platformId = inject(PLATFORM_ID);
   readonly dialog = inject(MatDialog);
 
-  exchanes: ExchangeRes[] | undefined;
+  exchanes: ExchangeRes[] | undefined
   pagnation: Pagination | undefined;
   exchangeParams: ExchangeParams | undefined;
   pageSizeOption = [5, 10, 25];

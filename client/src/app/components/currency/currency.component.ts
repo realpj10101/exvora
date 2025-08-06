@@ -63,9 +63,17 @@ export class CurrencyComponent implements OnInit {
       if (userStr) {
         const user = JSON.parse(userStr);
         if (user.token) {
-          this.getAllExchangeCurrencies();
-          this.getAllUserExchanges();
-          this.getByExchangeName();
+          this._route.paramMap.subscribe(params => {
+            const exchangeName = params.get('exchangeName');
+
+            console.log(exchangeName);
+
+            if (exchangeName) {
+              this.getAllExchangeCurrencies(exchangeName);
+              this.getAllUserExchanges();
+              this.getByExchangeName(exchangeName);
+            }
+          })
         }
       }
     }
@@ -78,7 +86,10 @@ export class CurrencyComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'created') {
-        this.getAllExchangeCurrencies();
+        const exchangeName = this._route.snapshot.paramMap.get('exchangeName');
+
+        if (exchangeName)
+          this.getAllExchangeCurrencies(exchangeName);
       }
     });
   }
@@ -88,9 +99,7 @@ export class CurrencyComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  getAllExchangeCurrencies(): void {
-    const exchangeName: string | null = this._route.snapshot.paramMap.get('exchangeName');
-
+  getAllExchangeCurrencies(exchangeName: string): void {
     if (this.exchangeParams) {
       if (exchangeName)
         this._exchangeCurrencyService.getAll(this.exchangeParams, exchangeName).subscribe({
@@ -102,8 +111,6 @@ export class CurrencyComponent implements OnInit {
               const flattened = res.body.flatMap(item =>
                 item.currencies.map(currency => ({ currency }))
               );
-
-              console.log(this.exchange);
 
               this.dataSource = new MatTableDataSource(flattened);
 
@@ -135,9 +142,7 @@ export class CurrencyComponent implements OnInit {
     }
   }
 
-  getByExchangeName(): void {
-    const exchangeName: string | null = this._route.snapshot.paramMap.get('exchangeName');
-
+  getByExchangeName(exchangeName: string): void {
     if (exchangeName)
       this._exchangeService.getByExchageName(exchangeName).subscribe({
         next: (res) => {
@@ -162,6 +167,9 @@ export class CurrencyComponent implements OnInit {
 
   handlePageEvent(e: PageEvent) {
     if (this.exchangeParams) {
+      const exchangeName = this._route.snapshot.paramMap.get('exchangeName');
+
+
       if (e.pageSize !== this.exchangeParams.pageSize)
         e.pageIndex = 0;
 
@@ -169,7 +177,8 @@ export class CurrencyComponent implements OnInit {
       this.exchangeParams.pageSize = e.pageSize;
       this.exchangeParams.pageNumber = e.pageIndex + 1;
 
-      this.getAllExchangeCurrencies();
+      if (exchangeName)
+        this.getAllExchangeCurrencies(exchangeName);
     }
   }
 }

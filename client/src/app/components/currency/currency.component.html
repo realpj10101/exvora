@@ -21,7 +21,6 @@
                     </span>
                 </div>
                 <div class="bottom-side">
-                    <p class="exchange-description">{{ exchange.description }}</p>
                     @if (exchange.exchangeStatus === "Approved") {
                     <button class="btn" [routerLink]="['/currencies/' + exchange.exchangeName]">
                         <mat-icon class="icon">currency_bitcoin</mat-icon>

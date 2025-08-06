@@ -5,6 +5,7 @@
 
     .top {
         display: flex;
+        flex-wrap: wrap;
         gap: 1rem;
         align-items: center;
 
@@ -40,6 +41,7 @@
 
         .exchange-block {
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
             border: rgba(0, 0, 0, 0.1) 2px solid;
@@ -54,6 +56,7 @@
             .exchange-details {
                 .ex-con {
                     display: flex;
+                    flex-wrap: wrap;
                     align-items: center;
                     gap: 10px;
 
@@ -114,9 +117,13 @@
 
         .data-container {
 
+            .table {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch
+            }
 
             .table-source {
-                width: 100%;
                 border-radius: 12px;
                 border: 1px solid #e5e7eb;
                 overflow: hidden;
@@ -215,7 +222,9 @@
 
         .exchange-con {
             display: flex;
+            flex-wrap: wrap;
             gap: 1rem;
+            flex: 1;
         }
 
         .exchange-card {

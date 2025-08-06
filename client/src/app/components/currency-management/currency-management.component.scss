@@ -5,6 +5,7 @@
 
     .top {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         gap: 1rem;
         margin-bottom: 2rem;
@@ -44,8 +45,10 @@
 
         .top-side {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
-            
+            margin-bottom: 2rem;
+
             .left {
                 display: flex;
                 flex-direction: column;
@@ -85,8 +88,13 @@
             }
         }
 
-        .table-source {
+        .table {
             width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch
+        }
+
+        .table-source {
             border-radius: 12px;
             border: 1px solid #e5e7eb;
             overflow: hidden;

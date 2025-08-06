@@ -1,0 +1,85 @@
+::ng-deep .mat-dialog-container {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  color: #333;
+  max-width: 500px;
+}
+
+.dialog-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 4px;
+}
+
+.dialog-subtitle {
+  margin: 0 0 16px 0;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-layout {
+  display: flex;
+  gap: 16px;
+
+  >* {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+mat-form-field.full-width {
+  width: 100%;
+
+  .mat-form-field-outline {
+    border-radius: 8px;
+  }
+
+  input,
+  .mat-select-trigger {
+    background-color: #fafafa;
+  }
+}
+
+.dialog-actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  button {
+    border-radius: 8px;
+    padding: 6px 16px;
+    font-weight: 500;
+    text-transform: none;
+    cursor: pointer;
+  }
+
+  button[color='primary'] {
+    background-color: #1976d2;
+    color: #fff;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #1565c0;
+    }
+  }
+
+  button[color='warn'] {
+    background-color: #e53935;
+    color: #fff;
+
+    &:hover {
+      background-color: #c62828;
+    }
+  }
+}

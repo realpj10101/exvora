@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
 import { CreateCurrencyComponent } from '../create-currency/create-currency.component';
+import { log } from 'util';
 
 @Component({
   selector: 'app-currency-management',
@@ -45,8 +46,9 @@ export class CurrencyManagementComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'created') {
+        console.log(result);
         this.getAll();
-      }
+      } 
     })
   }
 

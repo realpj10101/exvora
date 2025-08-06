@@ -1,10 +1,9 @@
-import { Component, inject, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, inject, Output } from '@angular/core';
 import { CurrencyService } from '../../services/currency.service';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CurrencyReq } from '../../models/currency.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EventEmitter } from 'stream';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -31,6 +30,7 @@ export class CreateCurrencyComponent {
   private _currencyService = inject(CurrencyService);
   private _fB = inject(FormBuilder);
   private _snackbar = inject(MatSnackBar);
+  private _dialogRef = inject(MatDialogRef<CreateCurrencyComponent>);
 
   categoryOptions: string[] = ['Major', 'AltCoin', 'Defi', 'NFT', 'Meme'];
   statusOptions: string[] = ['Active', 'Paused', 'Delisted'];
@@ -72,7 +72,7 @@ export class CreateCurrencyComponent {
     let curencyInput: CurrencyReq = {
       symbol: this.SymbolCtrl.value,
       fullName: this.FullNameCtrl.value,
-      currenctPrice: this.CurrencyPriceCtrl.value,
+      currencyPrice: this.CurrencyPriceCtrl.value,
       marketCap: this.MarketCapCtrl.value,
       category: this.CategoryCtrl.value,
       status: this.StatusCtrl.value,
@@ -84,7 +84,9 @@ export class CreateCurrencyComponent {
           horizontalPosition: 'center',
           verticalPosition: 'top',
           duration: 7000
-        })
+        });
+
+        this._dialogRef.close('created');
       }
     })
   }

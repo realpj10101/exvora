@@ -1,7 +1,7 @@
 export interface CurrencyReq {
     symbol: string;
     fullName: string;
-    currenctPrice: number;
+    currencyPrice: number;
     marketCap: number;
     category: string;
     status: string;

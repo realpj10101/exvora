@@ -10,7 +10,7 @@ import { environment } from '../environments/environment.development';
 export class CurrencyService {
   private _http = inject(HttpClient);
   
-  private readonly _baseApiUrl = environment.apiUrl + 'api/currency';
+  private readonly _baseApiUrl = environment.apiUrl + 'api/currency/';
 
   addCurrency(request: CurrencyReq): Observable<CurrencyRes> {
     return this._http.post<CurrencyRes>(this._baseApiUrl + 'add-currency', request);

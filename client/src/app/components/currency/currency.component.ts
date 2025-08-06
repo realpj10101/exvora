@@ -45,6 +45,7 @@ export class CurrencyComponent implements OnInit {
   exchanges: ExchangeRes[] | undefined;
   pageSizeOptions = [3, 9, 12];
   exchangesPagination: Pagination | undefined;
+  exchange: ExchangeRes | undefined;
 
   ngOnInit(): void {
     this.exchangeParams = new ExchangeParams();
@@ -64,6 +65,7 @@ export class CurrencyComponent implements OnInit {
         if (user.token) {
           this.getAllExchangeCurrencies();
           this.getAllUserExchanges();
+          this.getByExchangeName();
         }
       }
     }
@@ -76,7 +78,7 @@ export class CurrencyComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'created') {
-        this.getAllExchangeCurrencies(); 
+        this.getAllExchangeCurrencies();
       }
     });
   }
@@ -101,10 +103,12 @@ export class CurrencyComponent implements OnInit {
                 item.currencies.map(currency => ({ currency }))
               );
 
+              console.log(this.exchange);
+
               this.dataSource = new MatTableDataSource(flattened);
 
               this.dataSource.filterPredicate = (data: { currency: CurrencyRes }, filter: string) => {
-                const filterText = filter.trim().toLowerCase(); 
+                const filterText = filter.trim().toLowerCase();
                 return (
                   data.currency.symbol.toLowerCase().includes(filterText) ||
                   data.currency.fullName.toLowerCase().includes(filterText) ||
@@ -129,7 +133,18 @@ export class CurrencyComponent implements OnInit {
         }
       })
     }
-  } 
+  }
+
+  getByExchangeName(): void {
+    const exchangeName: string | null = this._route.snapshot.paramMap.get('exchangeName');
+
+    if (exchangeName)
+      this._exchangeService.getByExchageName(exchangeName).subscribe({
+        next: (res) => {
+          this.exchange = res;
+        }
+      });
+  }
 
   goToNextPage(): void {
     if (this.exchangeParams && this.exchangesPagination && this.exchangesPagination.currentPage < this.exchangesPagination.totalPages) {
@@ -137,7 +152,7 @@ export class CurrencyComponent implements OnInit {
       this.getAllUserExchanges();
     }
   }
-  
+
   goToPreviousPage(): void {
     if (this.exchangeParams && this.exchangesPagination && this.exchangesPagination.currentPage > 1) {
       this.exchangeParams.pageNumber--;

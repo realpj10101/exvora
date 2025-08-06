@@ -35,7 +35,7 @@ export class ExchangeService {
   }
 
   getByExchageName(exchangeName: string): Observable<ExchangeRes> {
-    return this._http.get<ExchangeRes>(this._baseApiUrl + 'get-by-exchange-name' + exchangeName);
+    return this._http.get<ExchangeRes>(this._baseApiUrl + 'get-by-exchange-name/' + exchangeName);
   }
 
   approveExchange(exchangeName: string): Observable<ApiResponse> {

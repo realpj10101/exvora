@@ -44,17 +44,17 @@
     </div>
 
     <div class="main">
-        @for (exCur of exchangeCurrencies; track $index) {
+        @if (exchange) {
         <div class="exchange-block">
             <div class="exchange-details">
                 <div class="ex-con  ">
                     <mat-icon>apartment</mat-icon>
-                    <h1 class="name">{{exCur.exchange.exchangeName}}</h1>
+                    <h1 class="name">{{exchange.exchangeName}}</h1>
                 </div>
-                <p>Created on {{exCur.exchange.createdAt | date:'yyyy-MM-dd'}}</p>
+                <p>Created on {{exchange.createdAt | date:'yyyy-MM-dd'}}</p>
             </div>
             <div class="add-cur">
-                <button class="btn" (click)="openDialog(exCur.exchange.exchangeName)">
+                <button class="btn" (click)="openDialog(exchange.exchangeName)">
                     <mat-icon class="icon">add_2</mat-icon>
                     Add Currency
                 </button>
@@ -71,49 +71,60 @@
                 <input type="text" (keyup)="applyFilter($event)" matInput>
             </mat-form-field>
         </div>
-        <div class="table">
-            <table mat-table [dataSource]="dataSource" class="table-source">
-                <ng-container matColumnDef="position">
-                    <th mat-header-cell *matHeaderCellDef>#</th>
-                    <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
-                </ng-container>
+        <div class="data-container">
+            @if (exchangeCurrencies && exchangeCurrencies.length > 0) {
+            <div class="table">
+                <table mat-table [dataSource]="dataSource" class="table-source">
+                    <ng-container matColumnDef="position">
+                        <th mat-header-cell *matHeaderCellDef>#</th>
+                        <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+                    </ng-container>
 
-                <ng-container matColumnDef="symbol">
-                    <th mat-header-cell *matHeaderCellDef>Symbol</th>
-                    <td mat-cell *matCellDef="let element">
-                        <span class="first-letter">
-                            {{ element.currency.symbol.slice(0, 2) | uppercase }}
-                        </span>
-                        <span class="full-symbol">
-                            {{ element.currency.symbol | uppercase }}
-                        </span>
-                    </td>
-                </ng-container>
+                    <ng-container matColumnDef="symbol">
+                        <th mat-header-cell *matHeaderCellDef>Symbol</th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="first-letter">
+                                {{ element.currency.symbol.slice(0, 2) | uppercase }}
+                            </span>
+                            <span class="full-symbol">
+                                {{ element.currency.symbol | uppercase }}
+                            </span>
+                        </td>
+                    </ng-container>
 
-                <ng-container matColumnDef="fullName">
-                    <th mat-header-cell *matHeaderCellDef>Full Name</th>
-                    <td mat-cell *matCellDef="let element">{{ element.currency.fullName }}</td>
-                </ng-container>
+                    <ng-container matColumnDef="fullName">
+                        <th mat-header-cell *matHeaderCellDef>Full Name</th>
+                        <td mat-cell *matCellDef="let element">{{ element.currency.fullName }}</td>
+                    </ng-container>
 
-                <ng-container matColumnDef="price">
-                    <th mat-header-cell *matHeaderCellDef>Price</th>
-                    <td mat-cell *matCellDef="let element">{{ element.currency.price | currency }}</td>
-                </ng-container>
+                    <ng-container matColumnDef="price">
+                        <th mat-header-cell *matHeaderCellDef>Price</th>
+                        <td mat-cell *matCellDef="let element">{{ element.currency.price | currency }}</td>
+                    </ng-container>
 
-                <ng-container matColumnDef="category">
-                    <th mat-header-cell *matHeaderCellDef>Category</th>
-                    <td mat-cell *matCellDef="let element">{{ element.currency.category }}</td>
-                </ng-container>
+                    <ng-container matColumnDef="category">
+                        <th mat-header-cell *matHeaderCellDef>Category</th>
+                        <td mat-cell *matCellDef="let element">{{ element.currency.category }}</td>
+                    </ng-container>
 
-                <ng-container matColumnDef="status">
-                    <th mat-header-cell *matHeaderCellDef>Status</th>
-                    <td mat-cell *matCellDef="let element">{{ element.currency.status }}</td>
-                </ng-container>
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef>Status</th>
+                        <td mat-cell *matCellDef="let element">{{ element.currency.status }}</td>
+                    </ng-container>
 
-                <!-- Table Header & Rows -->
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
+                    <!-- Table Header & Rows -->
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+            }
+            @else {
+            <div class="empty-state">
+                <mat-icon class="empty-icon">sentiment_dissatisfied</mat-icon>
+                <h2>No Currencies Found</h2>
+                <p>This exchange doesn’t have any currencies yet.</p>
+            </div>
+            }
         </div>
     </div>
 </section>

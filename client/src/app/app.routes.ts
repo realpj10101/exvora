@@ -10,16 +10,32 @@ import { ExchangesComponent } from './components/exchanges/exchanges.component';
 import { CurrencyManagementComponent } from './components/currency-management/currency-management.component';
 import { inject, PLATFORM_ID } from '@angular/core';
 import { NoAccessComponent } from './components/errors/no-access/no-access.component';
+import { authGuard } from './guards/auth.guard';
+import { authLoggedInGuard } from './guards/auth-logged-in.guard';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'home', component: HomeComponent },
-    { path: 'account/register', component: RegisterComponent },
-    { path: 'account/login', component: LoginComponent },
-    { path: 'user', component: UserComponent },
-    { path: 'currencies/:exchangeName', component: CurrencyComponent },
-    { path: 'admin', component: AdminComponent },
-    { path: 'admin/exchanges', component: ExchangesComponent},
-    { path: 'admin/currencies', component: CurrencyManagementComponent},
-    { path: 'no-access', component: NoAccessComponent}
+    {
+        path: '',
+        runGuardsAndResolvers: 'always',
+        canActivate: [authGuard],
+        children: [
+            { path: 'user', component: UserComponent },
+            { path: 'currencies/:exchangeName', component: CurrencyComponent },
+            { path: 'admin', component: AdminComponent },
+            { path: 'admin/exchanges', component: ExchangesComponent },
+            { path: 'admin/currencies', component: CurrencyManagementComponent },
+        ]
+    },
+    {
+        path: '',
+        runGuardsAndResolvers: 'always',
+        canActivate: [authLoggedInGuard],
+        children: [
+            { path: 'account/register', component: RegisterComponent },
+            { path: 'account/login', component: LoginComponent },
+        ]
+    },
+    { path: 'no-access', component: NoAccessComponent }
 ];

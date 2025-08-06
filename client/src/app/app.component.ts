@@ -6,10 +6,12 @@ import { HomeComponent } from "./components/home/home.component";
 import { AccountService } from './services/account.service';
 import { isPlatformBrowser } from '@angular/common';
 import { LoggedInUser } from './models/logged-in-user.model';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent,],
+  imports: [RouterOutlet, NavbarComponent, NgxSpinnerModule, MatIconModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

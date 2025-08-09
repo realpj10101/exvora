@@ -14,5 +14,9 @@ public record Currency(
     float CurrencyPrice,
     float MarketCap,
     CurrencyType Category,
-    CurrencyStatus Status
+    CurrencyStatus Status,
+    string? FeedProvider,
+    string? FeedId,
+    string Quote,
+    DateTime? UpdatedAtUtc
 );

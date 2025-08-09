@@ -6,5 +6,8 @@ public record AddCurrencyDto(
     float CurrencyPrice,
     float MarketCap,
     string Category,
-    string Status   
+    string Status,
+    string? FeedProvider,
+    string? FeedId,
+    string? Quote   
 );

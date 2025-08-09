@@ -8,5 +8,9 @@ public record CurrencyResponse(
     float Price,
     float MarketCap,
     CurrencyType Category,
-    CurrencyStatus Status
+    CurrencyStatus Status,
+    string? FeedProvider,
+    string? FeedId,
+    string Quote,
+    DateTime? UpdatedAtUtc
 );

@@ -89,13 +89,22 @@ public static class Mappers
             return null;
         }
 
+        var feedProvider = string.IsNullOrWhiteSpace(request.FeedProvider) ? null : request.FeedProvider.Trim().ToLower();
+        var feedId = string.IsNullOrWhiteSpace(request.FeedId) ? null : request.FeedId.Trim();
+        var quote = string.IsNullOrWhiteSpace(request.Quote) ? "usd" : request.Quote.Trim();
+
+
         return new Currency(
             Symbol: request.Symbol.Trim().ToLower(),
             FullName: request.FullName.Trim().ToLower(),
             CurrencyPrice: request.CurrencyPrice,
             MarketCap: request.MarketCap,
             Category: currencyTypeEnum,
-            Status: currencyStatusEnum
+            Status: currencyStatusEnum,
+            FeedProvider: feedProvider,
+            FeedId: feedId,
+            Quote: quote,
+            UpdatedAtUtc: null
         );
     }
 
@@ -107,7 +116,11 @@ public static class Mappers
             Price: currency.CurrencyPrice,
             MarketCap: currency.MarketCap,
             Category: currency.Category,
-            Status: currency.Status
+            Status: currency.Status,
+            FeedProvider: currency.FeedProvider,
+            FeedId: currency.FeedId,
+            Quote: currency.Quote,
+            UpdatedAtUtc: currency.UpdatedAtUtc
         );
     }
 

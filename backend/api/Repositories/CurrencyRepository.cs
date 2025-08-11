@@ -71,14 +71,7 @@ public class CurrencyRepository : ICurrencyRepository
 
         foreach (Currency currency in currencies)
         {
-            CurrencyResponse currencyResponse = new(
-                Symbol: currency.Symbol,
-                FullName: currency.FullName,
-                Price: currency.CurrencyPrice,
-                MarketCap: currency.MarketCap,
-                Category: currency.Category,
-                Status: currency.Status
-            );
+            CurrencyResponse currencyResponse = Mappers.ConvertCurrencyToCurrencyResponse(currency);
 
             currencyResponses.Add(currencyResponse);
         }

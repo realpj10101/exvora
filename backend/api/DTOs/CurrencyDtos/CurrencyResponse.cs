@@ -5,7 +5,7 @@ namespace api.DTOs.CurrencyDtos;
 public record CurrencyResponse(
     string Symbol,
     string FullName,
-    float Price,
+    decimal Price,
     float MarketCap,
     CurrencyType Category,
     CurrencyStatus Status,

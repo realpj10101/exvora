@@ -11,7 +11,7 @@ public record Currency(
     ObjectId Id,
     string Symbol,
     string FullName,
-    float CurrencyPrice,
+    Decimal CurrencyPrice,
     float MarketCap,
     CurrencyType Category,
     CurrencyStatus Status,

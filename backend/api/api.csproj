@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="Google.Apis.Auth" Version="1.70.0" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
         <PackageReference Include="MongoDB.Driver" Version="2.30.0" />
         <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="6.0.0" />
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />

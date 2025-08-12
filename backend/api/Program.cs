@@ -1,5 +1,7 @@
 using System.Text.Json.Serialization;
 using api.Extensions;
+using api.Hubs;
+using api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,7 @@ builder.Services.AddApplicationService(builder.Configuration);
 builder.Services.AddIdentityService(builder.Configuration);
 builder.Services.AddRepositoryServices();
 builder.Services.AddOpenApi();
+builder.Services.AddHostedService<PriceBroadcastService>();
 
 builder.Services.AddAuthorization(options =>
 {
@@ -46,5 +49,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<PriceHub>("/hubs/prices");
 
 app.Run();

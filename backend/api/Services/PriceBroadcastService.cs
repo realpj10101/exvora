@@ -73,7 +73,7 @@ public class PriceBroadcastService : BackgroundService
                                 Quote: currency.Quote,
                                 UpdatedAtUtc: DateTime.UtcNow
                             );
-                            
+
                             await _hub.Clients.All.SendAsync("price", payload, cancellationToken);
                         }
                     }
@@ -83,6 +83,8 @@ public class PriceBroadcastService : BackgroundService
             {
                 Console.Error.WriteLine(ex);
             }
+
+            await Task.Delay(_interval, cancellationToken);
         }
     }
 }

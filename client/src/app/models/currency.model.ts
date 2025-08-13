@@ -5,6 +5,9 @@ export interface CurrencyReq {
     marketCap: number;
     category: string;
     status: string;
+    feedProvider?: string | null; // coingecko | null
+    feedId?: string | null; // bitcoin | eth or ...
+    quote?: string | null; //"usd" | "eur" or ...
 }
 
 export interface CurrencyRes {
@@ -14,4 +17,8 @@ export interface CurrencyRes {
     marketCap: number;
     category: string;
     status: string;
+    feedProvider?: string | null;
+    feedId: string | null;
+    quote: string;
+    updatedAtUtc: string | null;
 }

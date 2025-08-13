@@ -14,7 +14,6 @@ public static class RepositoryServiceExtensions
         services.AddScoped<ICurrencyRepository, CurrencyRepository>();
         services.AddScoped<IExchangeCurrencyRepository, ExchangeCurrencyRepository>();
         services.AddScoped<IGoogleAuthService, GoogleAuthService>();
-        services.AddScoped<ICoinPriceSource, CoinGeckoSource>();
 
         return services;
     }

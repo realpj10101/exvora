@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using api.Extensions;
 using api.Hubs;
@@ -19,9 +20,16 @@ builder.Services.AddRepositoryServices();
 builder.Services.AddOpenApi();
 builder.Services.AddHostedService<PriceBroadcastService>();
 
-builder.Services.AddSignalR();
+builder.Services.AddSignalR()
+ .AddJsonProtocol(options =>
+    {
+        // enumها به‌صورت string ارسال شوند
+        options.PayloadSerializerOptions.Converters.Add(
+            new JsonStringEnumConverter(JsonNamingPolicy.CamelCase )
+        );
+    });
 
-builder.Services.AddHttpClient<ICoinPriceSource, CoinGeckoSource>(c =>  
+builder.Services.AddHttpClient<ICoinPriceSource, CoinGeckoSource>(c =>
 {
     c.BaseAddress = new Uri("https://api.coingecko.com/api/v3/");
 });

@@ -17,6 +17,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddCurrencyComponent } from '../_modals/add-currency/add-currency.component';
 import { ExchangeRes } from '../../models/exchange.model';
 import { ExchangeService } from '../../services/exchange.service';
+import { PriceService } from '../../services/price.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-currency',
@@ -33,6 +35,10 @@ export class CurrencyComponent implements OnInit {
   private _exchangeService = inject(ExchangeService);
   private _route = inject(ActivatedRoute);
   private _platformId = inject(PLATFORM_ID);
+  private _priceService = inject(PriceService);
+  private _priceHub?: Subscription;
+  private _map: Record<string, CurrencyRes> = {};
+
   readonly dialog = inject(MatDialog);
 
   exchangeCurrencies: ExchangeCurrencyRes[] | undefined;
@@ -73,7 +79,9 @@ export class CurrencyComponent implements OnInit {
               this.getAllUserExchanges();
               this.getByExchangeName(exchangeName);
             }
-          })
+          });
+
+          this.startRealTime();
         }
       }
     }
@@ -111,6 +119,14 @@ export class CurrencyComponent implements OnInit {
               const flattened = res.body.flatMap(item =>
                 item.currencies.map(currency => ({ currency }))
               );
+
+              this._map = {};
+
+              for (const row of flattened) {
+                this._map[this.key(row.currency)] = row.currency;
+              }
+
+              this.refreshTable();
 
               this.dataSource = new MatTableDataSource(flattened);
 
@@ -180,5 +196,30 @@ export class CurrencyComponent implements OnInit {
       if (exchangeName)
         this.getAllExchangeCurrencies(exchangeName);
     }
+  }
+
+  private key(currency: CurrencyRes): string {
+    return `${currency.symbol}:${currency.quote ?? 'usd'}`;
+  }
+
+  private refreshTable(): void {
+    const rows = Object.values(this._map)
+      .sort((a, b) => a.symbol.localeCompare(b.symbol))
+      .map(currency => ({ currency }));
+
+    this.dataSource.data = rows;
+  }
+
+  private async startRealTime() {
+    await this._priceService.start();
+
+    this._priceHub = this._priceService.price$.subscribe(update => {
+      const k = this.key(update);
+
+      if (this._map[k]) {
+        this._map[k] = { ...this._map[k], ...update };
+        this.refreshTable();
+      }
+    });
   }
 }

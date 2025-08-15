@@ -68,7 +68,7 @@ public class PriceBroadcastService : BackgroundService
                                 MarketCap: currency.MarketCap,
                                 Category: currency.Category,
                                 Status: currency.Status,
-                                FeedProvider: currency.FeedProvider,
+                                FeedProvider: "coingecko",
                                 FeedId: currency.FeedId,
                                 Quote: currency.Quote,
                                 UpdatedAtUtc: DateTime.UtcNow

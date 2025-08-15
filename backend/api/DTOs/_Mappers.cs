@@ -101,7 +101,7 @@ public static class Mappers
             MarketCap: request.MarketCap,
             Category: currencyTypeEnum,
             Status: currencyStatusEnum,
-            FeedProvider: feedProvider,
+            FeedProvider: "coingecko",
             FeedId: feedId,
             Quote: quote,
             UpdatedAtUtc: null

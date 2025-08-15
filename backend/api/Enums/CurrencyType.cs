@@ -6,5 +6,6 @@ public enum CurrencyType
     AltCoin,
     Defi,
     NFT,
-    Meme
+    Meme,
+    Stablecoin
 }

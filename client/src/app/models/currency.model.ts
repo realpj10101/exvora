@@ -1,8 +1,6 @@
 export interface CurrencyReq {
     symbol: string;
     fullName: string;
-    currencyPrice: number;
-    marketCap: number;
     category: string;
     status: string;
     feedProvider?: string | null; // coingecko | null

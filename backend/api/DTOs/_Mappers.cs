@@ -97,8 +97,8 @@ public static class Mappers
         return new Currency(
             Symbol: request.Symbol.Trim().ToLower(),
             FullName: request.FullName.Trim().ToLower(),
-            CurrencyPrice: request.CurrencyPrice,
-            MarketCap: request.MarketCap,
+            CurrencyPrice: 0,
+            MarketCap: 0,
             Category: currencyTypeEnum,
             Status: currencyStatusEnum,
             FeedProvider: "coingecko",

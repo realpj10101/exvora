@@ -22,7 +22,7 @@ public class CoinGeckoSource : ICoinPriceSource
         var url = $"simple/price?ids={ids}&vs_currencies={vs}&include_24hr_change=true";
 
         using var res = await _http.GetAsync(url, cancellationToken);
-        
+            
         res.EnsureSuccessStatusCode();
         
         using var doc = await JsonDocument.ParseAsync(await res.Content.ReadAsStreamAsync(cancellationToken),

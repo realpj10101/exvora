@@ -34,6 +34,7 @@ export class CreateCurrencyComponent {
 
   categoryOptions: string[] = ['Major', 'AltCoin', 'Defi', 'NFT', 'Meme'];
   statusOptions: string[] = ['Active', 'Paused', 'Delisted'];
+  currencyIdOptions: string[] = ['polkadot', 'matic-network', 'litecoin', 'tron', 'avalanche-2', 'chainlink', 'cosmos', 'stellar', 'bitcoin-cash', 'aptos']; 
 
   currencyFg = this._fB.group({
     symbolCtrl: ['', [Validators.required, Validators.maxLength(50)]],
@@ -41,7 +42,8 @@ export class CreateCurrencyComponent {
     currencyPriceCtrl: [0, [Validators.required]],
     marketCapCtrl: [0, [Validators.required]],
     categoryCtrl: ['', [Validators.required, Validators.maxLength(50)]],
-    statusCtrl: ['', [Validators.required, Validators.maxLength(50)]]
+    statusCtrl: ['', [Validators.required, Validators.maxLength(50)]],
+    idCtrl: ['', [Validators.required, Validators.maxLength(50)]]
   })
 
   get SymbolCtrl(): FormControl {
@@ -68,14 +70,17 @@ export class CreateCurrencyComponent {
     return this.currencyFg.get('statusCtrl') as FormControl;
   }
 
+  get IdCtrl(): FormControl {
+    return  this.currencyFg.get('idCtrl') as FormControl;
+  }
+
   createCurrency(): void {
     let curencyInput: CurrencyReq = {
       symbol: this.SymbolCtrl.value,
       fullName: this.FullNameCtrl.value,
-      currencyPrice: this.CurrencyPriceCtrl.value,
-      marketCap: this.MarketCapCtrl.value,
       category: this.CategoryCtrl.value,
       status: this.StatusCtrl.value,
+      feedId: this.IdCtrl.value
     }
 
     this._currencyService.addCurrency(curencyInput).subscribe({

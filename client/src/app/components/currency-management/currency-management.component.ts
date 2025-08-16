@@ -34,7 +34,6 @@ export class CurrencyManagementComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<CurrencyRes>();
   displayColumns: string[] = ['symbol', 'fullName', 'price', 'category', 'status', 'updatedAtUtc'];
 
-
   ngOnInit(): void {
     if (isPlatformBrowser(this._platformId)) {
       const userStr = localStorage.getItem('loggedInUser');

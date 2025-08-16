@@ -10,14 +10,24 @@
           <span class="brand">Exvora</span>
         </div>
         <div class="nav-links">
-          @if (accountService.loggedInUserSig(); as user) {
+          <ng-container *ngIf="accountService.loggedInUserSig() as user; else loggedOutButtons">
+            <button class="btn-outline-logout" (click)="logout()">Logout</button>
+          </ng-container>
+
+          <ng-template #loggedOutButtons>
+            <a routerLink="/account/login">
+              <button class="btn-outline">Login</button>
+            </a>
+          </ng-template>
+
+          <!-- @if (accountService.loggedInUserSig(); as user) {
           <button class="btn-outline-logout" (click)="logout()">Logout</button>
           }
           @else {
           <a routerLink="/account/login">
             <button class="btn-outline">Login</button>
           </a>
-          }
+          } -->
         </div>
       </div>
     </div>
